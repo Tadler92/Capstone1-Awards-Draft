@@ -49,6 +49,13 @@ CREATE TABLE users_films
     film_id INTEGER REFERENCES films ON DELETE CASCADE
 );
 
+CREATE TABLE groups_users
+(
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES groups ON DELETE CASCADE,
+    film_id INTEGER REFERENCES users ON DELETE CASCADE
+);
+
 CREATE TABLE categories_shows
 (
     id SERIAL PRIMARY KEY,
