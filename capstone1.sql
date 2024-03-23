@@ -16,6 +16,13 @@ CREATE TABLE users
     img_url TEXT DEFAULT 'https://photos.google.com/photo/AF1QipMFokgzHFd_LX1T6H1nhb0bH5wEH29fg2TVfONv'
 );
 
+CREATE TABLE groups
+(
+    id SERIAL PRIMARY KEY,
+    group_name VARCHAR(20) NOT NULL UNIQUE,
+    password TEXT DEFAULT NULL,
+);
+
 CREATE TABLE films
 (
     id SERIAL PRIMARY KEY,
