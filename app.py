@@ -156,6 +156,7 @@ def show_film_info(film_id):
     """Shows info for a specific film"""
 
     film = Film.query.get_or_404(film_id)
+    award_shows = AwardShow.query.all()
 
     resp = requests.get(f'http://www.omdbapi.com?apikey={api_key}&t={film.title}')
 
@@ -169,7 +170,7 @@ def show_film_info(film_id):
     rating = omdb_dict['Rated']
     poster_url = omdb_dict['Poster']
 
-    return render_template ('film.html', title=title, rating=rating, poster=poster_url)
+    return render_template ('film.html', title=title, rating=rating, poster=poster_url, film=film, award_shows=award_shows)
 
 
 

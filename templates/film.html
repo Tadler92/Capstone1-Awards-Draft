@@ -7,5 +7,59 @@
 
 <img src="{{poster}}" alt="Poster for {{title}}">
 
+<div class="awards-area">
+  <a href="/films/{{ film.id }}">@{{ film.title }}</a>
+  <span class="text-muted">{{ film.filmnoms }}</span>
+  <p>{{ film.filmwins }}</p>
+</div>
+
+<div>
+  <ul>
+    {% for nomination in film.filmnoms %}
+    <li>
+      {{nomination.nom_point.nomed_category_show.award_show.show_name}}
+      --
+      {{nomination.nom_point.nomed_category_show.category.category_name}}
+      --
+      {{nomination.nom_point.points}}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% for show in award_shows %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>{{show.show_name}}</th>
+      <th>Nom Points</th>
+      <th>Win Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for nomination in film.filmnoms %}
+    {% if nomination.nom_point.nomed_category_show.award_show.show_name == show.show_name %}
+
+    <tr>
+      <td>{{nomination.nom_point.nomed_category_show.category.category_name}}</td>
+      <td>{{nomination.nom_point.points}}</td>
+      <td>
+        {% for win in film.filmwins %}
+        {% if win.win_point.won_category_show.category.category_name == nomination.nom_point.nomed_category_show.category.category_name and win.win_point.won_category_show.award_show.show_name == show.show_name%}
+          {{win.win_point.points}}
+
+        {% else %}
+          ----
+
+        {% endif %}
+        {% endfor %}
+      </td>
+    </tr>
+
+    {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+{% endfor %}
 
 {% endblock %}
