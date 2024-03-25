@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<img src="{{ user.img_url }}" alt="Image for {{ user.username }}" id="profile-avatar">
+<div class="row full-width">
+  <div class="container">
+    <div class="row justify-content-end">
+      <div class="col-9">
+        <ul class="user-stats nav nav-pills">
+          <li class="stat">
+            <p class="small">Messages</p>
+            <h4>
+              <a href="/users/{{ user.id }}">{{ user.messages | length }}</a>
+            </h4>
+          </li>
+          <li class="stat">
+            <p class="small">Following</p>
+            <h4>
+              <a href="/users/{{ user.id }}/following">{{ user.following | length }}</a>
+            </h4>
+          </li>
+          <li class="stat">
+            <p class="small">Followers</p>
+            <h4>
+              <a href="/users/{{ user.id }}/followers">{{ user.followers | length }}</a>
+            </h4>
+          </li>
+          <li class="stat">
+            <p class="small">Likes</p>
+            <h4><a href="/users/{{user.id}}/likes">{{user.likes | length}}</a></h4>
+            <!-- <h4>{{user.likes | length}}</h4> -->
+          </li>
+          <div class="ml-auto">
+            {% if g.user.id == user.id %}
+            <a href="/users/profile" class="btn btn-outline-secondary">Edit Profile</a>
+            <form method="POST" action="/users/delete" class="form-inline">
+              <button class="btn btn-outline-danger ml-2">Delete Profile</button>
+            </form>
+            {% endif %}
+            <!-- <form method="POST" action="/users/stop-following/{{ user.id }}">
+              <button class="btn btn-primary">Unfollow</button>
+            </form> -->
+            <!-- <form method="POST" action="/users/follow/{{ user.id }}">
+              <button class="btn btn-outline-primary">Follow</button>
+            </form> -->
+            
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-3">
+    <h4 id="sidebar-username">@{{ user.username }}</h4>
+    <!-- <p>{{user.bio}}</p>
+    <p class="user-location"><span class="fa fa-map-marker"></span>{{user.location}}</p> -->
+    <!-- <img src="https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg" alt="an image again"> -->
+    
+    <!-- <a href="https://imgbb.com/"><img src="https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg" alt="Empty-Profile-Pic" border="0"></a><br /><a target='_blank' href='https://dedupelist.com/'>exclude duplicates</a><br />
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/1200px-Cat_August_2010-4.jpg" alt="an image again"> -->
+  </div>
+
+  <div id="user-groups">
+    <p>Groups:</p>
+    <ul>
+      {% for group in user.groups %}
+        <li>
+          <a href="/groups/{{ group.id }}">{{ group.group_name }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  
+  {% if g.user.id == user.id %}
+  <div id="user-group-btns">
+    <a class="btn btn-primary" href="/">Join a group</a>
+    <a class="btn btn-primary" href="/groups/add">Make a new group</a>
+  </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}

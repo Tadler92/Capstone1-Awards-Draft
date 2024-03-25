@@ -13,14 +13,15 @@ CREATE TABLE users
     username VARCHAR(15) NOT NULL UNIQUE,
     email TEXT NOT NULL,
     password TEXT NOT NULL,
-    img_url TEXT DEFAULT 'https://photos.google.com/photo/AF1QipMFokgzHFd_LX1T6H1nhb0bH5wEH29fg2TVfONv'
+    img_url TEXT DEFAULT 'https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg'
+    -- img_url TEXT DEFAULT 'https://photos.google.com/photo/AF1QipMFokgzHFd_LX1T6H1nhb0bH5wEH29fg2TVfONv'
 );
 
 CREATE TABLE groups
 (
     id SERIAL PRIMARY KEY,
     group_name VARCHAR(20) NOT NULL UNIQUE,
-    password TEXT DEFAULT NULL,
+    password TEXT DEFAULT NULL
 );
 
 CREATE TABLE films
@@ -52,8 +53,8 @@ CREATE TABLE users_films
 CREATE TABLE groups_users
 (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES groups ON DELETE CASCADE,
-    film_id INTEGER REFERENCES users ON DELETE CASCADE
+    group_id INTEGER REFERENCES groups ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users ON DELETE CASCADE
 );
 
 CREATE TABLE categories_shows
@@ -66,14 +67,14 @@ CREATE TABLE categories_shows
 CREATE TABLE nom_points
 (
     id SERIAL PRIMARY KEY,
-    category_id INTEGER REFERENCES categories ON DELETE CASCADE,
+    category_show_id INTEGER REFERENCES categories_shows ON DELETE CASCADE,
     points INTEGER
 );
 
 CREATE TABLE win_points
 (
     id SERIAL PRIMARY KEY,
-    category_id INTEGER REFERENCES categories ON DELETE CASCADE,
+    category_show_id INTEGER REFERENCES categories_shows ON DELETE CASCADE,
     points INTEGER
 );
 
@@ -90,6 +91,207 @@ CREATE TABLE films_wins
     film_id INTEGER REFERENCES films ON DELETE CASCADE,
     win_points_id INTEGER REFERENCES win_points ON DELETE CASCADE
 );
+
+
+INSERT INTO films (title, year)
+VALUES
+('Poor Things', 2023),
+('Anatomy of a Fall', 2023),
+('Anyone but You', 2023),
+('Wonka', 2023),
+('Oppenheimer', 2023),
+('Barbie', 2023),
+('The Iron Claw', 2023),
+('Leave the World Behind', 2023),
+('Wish', 2023),
+('The Boys in the Boat', 2023),
+('American Fiction', 2023),
+('The Holdovers', 2023),
+('Past Lives', 2023),
+('May December', 2023),
+('Bottoms', 2023),
+('Saltburn', 2023),
+('No One Will Save You', 2023),
+('The Hunger Games: The Ballad of Songbirds and Snakes', 2023),
+('Napoleon', 2023),
+('The Creator', 2023),
+('The Exorcist: Believer', 2023),
+('Rebel Moon', 2023),
+('The Super Mario Bros. Movie', 2023),
+('Spider-Man: Across the Spider-Verse', 2023),
+('Guardians of the Galaxy Vol. 3', 2023),
+('Killers of the Flower Moon', 2023),
+('Maestro', 2023),
+('The Zone of Interest', 2023),
+('Nyad', 2023),
+('Rustin', 2023),
+('The Color Purple', 2023),
+('Mission: Impossible - Dead Reckoning Part One', 2023),
+('Godzilla Minus One', 2023);
+
+INSERT INTO users (first_name, last_name, username, email, password)
+VALUES
+('Trevor', 'Duhon', 'Tadler', 'sithlord789@yahoo.com', 'hello!!!:)'),
+('Kyle', 'Duhon', 'RaidenStorm', 'lightninglover@yahoo.com', 'KA-chow!!'),
+('Kellie', 'Viola', 'KVoila', 'KellsBells@yahoo.com', 'PurpsNurps1'),
+('Haley', 'Anslem', 'handslamy', 'handslamy@yahoo.com', 'LGBTcutie');
+
+INSERT INTO groups (group_name)
+VALUES
+('The OGsss'),
+('GURLLLIEESSS');
+
+INSERT INTO award_shows (show_name)
+VALUES
+('Academy Awards'),
+('Golden Globes'),
+('Razzies'),
+('SAG Awards'),
+('DGA Awards'),
+('WGA Awards'),
+('Critics Choice Awards');
+
+INSERT INTO categories (category_name)
+VALUES
+('Best Picture'),
+('Best Director'),
+('Best Actress'),
+('Best Actor'),
+('Best Animated Feature'),
+('Best Supporting Actress'),
+('Best Supporting Actor'),
+('Best Original Screenplay'),
+('Best Adapted Screenplay'),
+('Best Documentary'),
+('Best Original Score'),
+('Best Original Song'),
+('Best International Feature Film'),
+('Worst Picture'),
+('Worst Actor'),
+('Worst Actress'),
+('Worst Director');
+
+INSERT INTO categories_shows (category_id, award_show_id)
+VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 1),
+(7, 1),
+(8, 1),
+(2, 2),
+(3, 4),
+(4, 4),
+(2, 7),
+(3, 7),
+(4, 7);
+
+INSERT INTO nom_points (category_show_id, points)
+VALUES
+(1, 8),
+(2, 6),
+(9, 4),
+(12, 4),
+(3, 6),
+(10, 4),
+(13, 4),
+(4, 6),
+(11, 4),
+(14, 4),
+(5, 6),
+(6, 4),
+(7, 4),
+(8, 4);
+
+INSERT INTO win_points (category_show_id, points)
+VALUES
+(1, 8),
+(2, 6),
+(9, 4),
+(12, 4),
+(3, 6),
+(10, 4),
+(13, 4),
+(4, 6),
+(11, 4),
+(14, 4),
+(5, 6),
+(6, 4),
+(7, 4),
+(8, 4);
+
+INSERT INTO films_noms (film_id, nom_points_id)
+VALUES
+(1, 1),
+(2, 1),
+(5, 1),
+(6, 1),
+(1, 2),
+(5, 2),
+(1, 3),
+(26, 3),
+(5, 4),
+(11, 4),
+(15, 8),
+(11, 8);
+
+INSERT INTO films_wins (film_id, win_points_id)
+VALUES
+(5, 1),
+(5, 2),
+(1, 3),
+(5, 4),
+(11, 8);
+
+INSERT INTO groups_users (group_id, user_id)
+VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(2, 3),
+(2, 4);
+
+INSERT INTO users_films (user_id, film_id)
+VALUES
+(1, 1),
+(1, 11),
+(3, 5),
+(3, 26),
+(2, 15),
+(4, 22),
+(4, 18),
+(2, 2),
+(3, 6),
+(4, 25);
+
+
+
+
+
+
+-- INSERT INTO win_points (category_id, points)
+-- VALUES
+-- (1, 8),
+-- (1, 6),
+-- (2, 6),
+-- (2, 4),
+-- (3, 6),
+-- (3, 4),
+-- (4, 6),
+-- (4, 4),
+-- (5, 6),
+-- (6, 4),
+-- (7, 4),
+-- (6, 3),
+-- (7, 3),
+-- (8, 4),
+-- (8, 3),
+-- (9, 4),
+-- (9, 3),
+-- (10, 3);
 
 
 
