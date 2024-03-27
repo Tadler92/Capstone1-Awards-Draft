@@ -26,8 +26,62 @@
     {% endfor %}
   </ul>
 </div>
+<div>
+  <ul>
+    {% for win in film.filmwins %}
+    <li>
+      {{win.win_point.won_category_show.award_show.show_name}}
+      --
+      {{win.win_point.won_category_show.category.category_name}}
+      --
+      {{win.win_point.points}}
+    </li>
+    {% endfor %}
+  </ul>
+</div>
 
 {% for show in award_shows %}
+<table class="table">
+  <thead>
+    <tr>
+      <th>{{show}}</th>
+      <th>Nom Points</th>
+      <th>Win Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for category in award_shows[show] %}
+
+    <tr>
+      <td>{{category}}</td>
+      <td>
+        {% for nomination in film.filmnoms %}
+          {% if nomination.nom_point.nomed_category_show.award_show.show_name == show and nomination.nom_point.nomed_category_show.category.category_name == category %}
+
+          {{nomination.nom_point.points}}
+
+
+          {% endif %}
+        {% endfor %}
+      </td>
+      
+      <td>
+        {% for win in film.filmwins %}
+          {% if win.win_point.won_category_show.award_show.show_name == show and win.win_point.won_category_show.category.category_name == category %}
+          
+            {{win.win_point.points}}
+
+          {% endif %}
+        {% endfor %}
+      </td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+{% endfor %}
+
+<!-- {% for show in award_shows %}
 <table class="table">
   <thead>
     <tr>
@@ -60,6 +114,6 @@
     {% endfor %}
   </tbody>
 </table>
-{% endfor %}
+{% endfor %} -->
 
 {% endblock %}

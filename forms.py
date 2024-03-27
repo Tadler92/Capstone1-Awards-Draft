@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
-from wtforms.validators import InputRequired, DataRequired, Email, Length
+from wtforms import StringField, PasswordField, SelectField, FileField
+from wtforms.validators import InputRequired, DataRequired, Email, Length, Optional
 
 class AddUserForm(FlaskForm):
     """Form for adding users."""
@@ -18,3 +18,22 @@ class LoginForm(FlaskForm):
 
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[Length(min=6)])
+
+
+class GroupForm(FlaskForm):
+    """Form for a user to create a group"""
+
+    group_name = StringField('Group Name', validators=[InputRequired(), Length(max=20)])
+    password = PasswordField('(Optional) Password', validators=[Optional(), Length(min=6)])
+
+
+class PrivateGroupForm(FlaskForm):
+    """Form to authenticate a user joining a private group"""
+
+    password = PasswordField('Password', validators=[Length(min=6)])
+
+
+class DraftFilmInGroupForm(FlaskForm):
+    """Form for a user to draft a film once they are in a group"""
+
+    film = SelectField('Film to Draft', coerce=int)

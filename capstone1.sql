@@ -21,7 +21,8 @@ CREATE TABLE groups
 (
     id SERIAL PRIMARY KEY,
     group_name VARCHAR(20) NOT NULL UNIQUE,
-    password TEXT DEFAULT NULL
+    password TEXT DEFAULT NULL,
+    is_private BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE films
@@ -43,18 +44,19 @@ CREATE TABLE categories
     category_name TEXT
 );
 
-CREATE TABLE users_films
-(
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users ON DELETE CASCADE,
-    film_id INTEGER REFERENCES films ON DELETE CASCADE
-);
-
 CREATE TABLE groups_users
 (
     id SERIAL PRIMARY KEY,
     group_id INTEGER REFERENCES groups ON DELETE CASCADE,
-    user_id INTEGER REFERENCES users ON DELETE CASCADE
+    user_id INTEGER REFERENCES users ON DELETE CASCADE,
+    is_admin BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE group_users_films
+(
+    id SERIAL PRIMARY KEY,
+    group_user_id INTEGER REFERENCES groups_users ON DELETE CASCADE,
+    film_id INTEGER REFERENCES films ON DELETE CASCADE
 );
 
 CREATE TABLE categories_shows
@@ -62,6 +64,14 @@ CREATE TABLE categories_shows
     id SERIAL PRIMARY KEY,
     category_id INTEGER REFERENCES categories ON DELETE CASCADE,
     award_show_id INTEGER REFERENCES award_shows ON DELETE CASCADE
+);
+
+CREATE TABLE points
+(
+    id SERIAL PRIMARY KEY,
+    category_show_id INTEGER REFERENCES categories_shows ON DELETE CASCADE,
+    nom_or_win TEXT,
+    points INTEGER
 );
 
 CREATE TABLE nom_points
@@ -76,6 +86,13 @@ CREATE TABLE win_points
     id SERIAL PRIMARY KEY,
     category_show_id INTEGER REFERENCES categories_shows ON DELETE CASCADE,
     points INTEGER
+);
+
+CREATE TABLE films_points
+(
+    id SERIAL PRIMARY KEY,
+    film_id INTEGER REFERENCES films ON DELETE CASCADE,
+    points_id INTEGER REFERENCES points ON DELETE CASCADE
 );
 
 CREATE TABLE films_noms
@@ -188,6 +205,37 @@ VALUES
 (3, 7),
 (4, 7);
 
+INSERT INTO points (category_show_id, points, nom_or_win)
+VALUES
+(1, 8, 'nom'),
+(1, 8, 'win'),
+(2, 6, 'nom'),
+(2, 6, 'win'),
+(9, 4, 'nom'),
+(9, 4, 'win'),
+(12, 4, 'nom'),
+(12, 4, 'win'),
+(3, 6, 'nom'),
+(3, 6, 'win'),
+(10, 4, 'nom'),
+(10, 4, 'win'),
+(13, 4, 'nom'),
+(13, 4, 'win'),
+(4, 6, 'nom'),
+(4, 6, 'win'),
+(11, 4, 'nom'),
+(11, 4, 'win'),
+(14, 4, 'nom'),
+(14, 4, 'win'),
+(5, 6, 'nom'),
+(5, 6, 'win'),
+(6, 4, 'nom'),
+(6, 4, 'win'),
+(7, 4, 'nom'),
+(7, 4, 'win'),
+(8, 4, 'nom');
+(8, 4, 'win');
+
 INSERT INTO nom_points (category_show_id, points)
 VALUES
 (1, 8),
@@ -222,6 +270,26 @@ VALUES
 (7, 4),
 (8, 4);
 
+INSERT INTO films_points (film_id, points_id)
+VALUES
+(1, 1),
+(2, 1),
+(5, 1),
+(6, 1),
+(5, 2),
+(1, 3),
+(5, 3),
+(5, 4),
+(1, 5),
+(26, 5),
+(1, 6),
+(5, 7),
+(11, 7),
+(5, 8),
+(15, 15),
+(11, 15);
+(11, 16);
+
 INSERT INTO films_noms (film_id, nom_points_id)
 VALUES
 (1, 1),
@@ -245,16 +313,16 @@ VALUES
 (5, 4),
 (11, 8);
 
-INSERT INTO groups_users (group_id, user_id)
+INSERT INTO groups_users (group_id, user_id, is_admin)
 VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 4),
-(2, 3),
-(2, 4);
+(1, 1, TRUE),
+(1, 2, FALSE),
+(1, 3, FALSE),
+(1, 4, FALSE),
+(2, 3, TRUE),
+(2, 4, FALSE);
 
-INSERT INTO users_films (user_id, film_id)
+INSERT INTO group_users_films (group_user_id, film_id)
 VALUES
 (1, 1),
 (1, 11),
@@ -264,8 +332,8 @@ VALUES
 (4, 22),
 (4, 18),
 (2, 2),
-(3, 6),
-(4, 25);
+(5, 6),
+(6, 25);
 
 
 
