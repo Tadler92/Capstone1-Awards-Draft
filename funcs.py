@@ -50,6 +50,21 @@ def film_in_group_lst(group):
 
 
 
+def merge_choices(choices):
+    """Function that turns information gotten from a db into a list of tuples with those choices"""
+
+    ids = [0]
+    titles = ['-- Choose a film --']
+    for choice in choices:
+        ids.append(choice[0])
+        titles.append(choice[1])
+
+    merged_choices = [(ids[i], titles[i]) for i in range(0, len(ids))]
+
+    return merged_choices
+
+
+
 # def user_film_dict(group):
 #     """Function that takes a group as a parameter, then returns a dictionary that shows the films that a user has"""
 

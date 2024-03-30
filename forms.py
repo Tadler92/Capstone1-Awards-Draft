@@ -37,3 +37,19 @@ class DraftFilmInGroupForm(FlaskForm):
     """Form for a user to draft a film once they are in a group"""
 
     film = SelectField('Film to Draft', coerce=int)
+
+
+class EditProfileForm(FlaskForm):
+    """Form for a user to edit their profile"""
+
+    first_name = StringField('First Name', validators=[DataRequired(), Length(max=25)])
+    last_name = StringField('Last Name', validators=[DataRequired(), Length(max=25)])
+    username = StringField('Username', validators=[DataRequired(), Length(max=15)])
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    img_url = StringField('(Optional) Image URL')
+
+
+class EditGroupForm(FlaskForm):
+    """Form for admin user to edit their group"""
+
+    group_name = StringField('Group Name', validators=[DataRequired(), Length(max=20)])

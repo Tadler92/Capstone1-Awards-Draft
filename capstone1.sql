@@ -5,6 +5,12 @@ CREATE DATABASE awards_draft;
 \c awards_draft
 
 -- Create tables
+CREATE TABLE years
+(
+    id SERIAL PRIMARY KEY,
+    curr_year INTEGER NOT NULL
+);
+
 CREATE TABLE users
 (
     id SERIAL PRIMARY KEY,
@@ -29,7 +35,7 @@ CREATE TABLE films
 (
     id SERIAL PRIMARY KEY,
     title TEXT,
-    year INTEGER
+    year_id INTEGER REFERENCES years ON DELETE SET NULL
 );
 
 CREATE TABLE award_shows
@@ -109,42 +115,47 @@ CREATE TABLE films_wins
     win_points_id INTEGER REFERENCES win_points ON DELETE CASCADE
 );
 
-
-INSERT INTO films (title, year)
+INSERT INTO years (curr_year)
 VALUES
-('Poor Things', 2023),
-('Anatomy of a Fall', 2023),
-('Anyone but You', 2023),
-('Wonka', 2023),
-('Oppenheimer', 2023),
-('Barbie', 2023),
-('The Iron Claw', 2023),
-('Leave the World Behind', 2023),
-('Wish', 2023),
-('The Boys in the Boat', 2023),
-('American Fiction', 2023),
-('The Holdovers', 2023),
-('Past Lives', 2023),
-('May December', 2023),
-('Bottoms', 2023),
-('Saltburn', 2023),
-('No One Will Save You', 2023),
-('The Hunger Games: The Ballad of Songbirds and Snakes', 2023),
-('Napoleon', 2023),
-('The Creator', 2023),
-('The Exorcist: Believer', 2023),
-('Rebel Moon', 2023),
-('The Super Mario Bros. Movie', 2023),
-('Spider-Man: Across the Spider-Verse', 2023),
-('Guardians of the Galaxy Vol. 3', 2023),
-('Killers of the Flower Moon', 2023),
-('Maestro', 2023),
-('The Zone of Interest', 2023),
-('Nyad', 2023),
-('Rustin', 2023),
-('The Color Purple', 2023),
-('Mission: Impossible - Dead Reckoning Part One', 2023),
-('Godzilla Minus One', 2023);
+(1927), (1928),
+(1929), (1930), (1931), (1932), (1933), (1934), (1935), (1936), (1937), (1938), (1939), (1940), (1941), (1942), (1943), (1944), (1945), (1946), (1947), (1948), (1949), (1950), (1951), (1952), (1953), (1954), (1955), (1956), (1957), (1958), (1959), (1960), (1961), (1962), (1963), (1964), (1965), (1966), (1967), (1968), (1969), (1970), (1971), (1972), (1973), (1974), (1975), (1976), (1977), (1978), (1979), (1980), (1981), (1982), (1983), (1984), (1985), (1986), (1987), (1988), (1989), (1990), (1991), (1992), (1993), (1994), (1995), (1996), (1997), (1998), (1999), (2000), (2001), (2002), (2003), (2004), (2005), (2006), (2007), (2008), (2009), (2010), (2011), (2012), (2013), (2014), (2015), (2016), (2017), (2018), (2019), (2020), (2021), (2022), (2023), (2024);
+
+
+INSERT INTO films (title, year_id)
+VALUES
+('Poor Things', 97),
+('Anatomy of a Fall', 97),
+('Anyone but You', 97),
+('Wonka', 97),
+('Oppenheimer', 97),
+('Barbie', 97),
+('The Iron Claw', 97),
+('Leave the World Behind', 97),
+('Wish', 97),
+('The Boys in the Boat', 97),
+('American Fiction', 97),
+('The Holdovers', 97),
+('Past Lives', 97),
+('May December', 97),
+('Bottoms', 97),
+('Saltburn', 97),
+('No One Will Save You', 97),
+('The Hunger Games: The Ballad of Songbirds and Snakes', 97),
+('Napoleon', 97),
+('The Creator', 97),
+('The Exorcist: Believer', 97),
+('Rebel Moon', 97),
+('The Super Mario Bros. Movie', 97),
+('Spider-Man: Across the Spider-Verse', 97),
+('Guardians of the Galaxy Vol. 3', 97),
+('Killers of the Flower Moon', 97),
+('Maestro', 97),
+('The Zone of Interest', 97),
+('Nyad', 97),
+('Rustin', 97),
+('The Color Purple', 97),
+('Mission: Impossible - Dead Reckoning Part One', 97),
+('Godzilla Minus One', 97);
 
 INSERT INTO users (first_name, last_name, username, email, password)
 VALUES
@@ -233,7 +244,7 @@ VALUES
 (6, 4, 'win'),
 (7, 4, 'nom'),
 (7, 4, 'win'),
-(8, 4, 'nom');
+(8, 4, 'nom'),
 (8, 4, 'win');
 
 INSERT INTO nom_points (category_show_id, points)
@@ -287,7 +298,7 @@ VALUES
 (11, 7),
 (5, 8),
 (15, 15),
-(11, 15);
+(11, 15),
 (11, 16);
 
 INSERT INTO films_noms (film_id, nom_points_id)

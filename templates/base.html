@@ -14,14 +14,14 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark mb-4">
   <a class="navbar-brand" href="/">Home</a>
   <ul class="navbar-nav">
-    <li class="nav-item"><a class="nav-link" href="/playlists">Groups</a></li>
+    <li class="nav-item"><a class="nav-link" href="/groups">Groups</a></li>
     <!-- <li class="nav-item"><a class="nav-link" href="/songs">Users</a></li> -->
     {% if g.user %}
-    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+    <li class="nav-item signout"><a class="nav-link" href="/logout">Logout</a></li>
     <li class="nav-item"><a class="nav-link" href="/users/{{g.user.id}}">Profile Page</a></li>
     {% else %}
-    <li class="nav-item"><a class="nav-link" href="/signup">Signup</a></li>
-    <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+    <li class="nav-item signin"><a class="nav-link" href="/signup">Signup</a></li>
+    <li class="nav-item signin"><a class="nav-link" href="/login">Login</a></li>
     {% endif %}
   </ul>
 </nav>
@@ -36,5 +36,53 @@
   {% endblock %}
 </div>
 
+<!-- <div class="footer navbar navbar-expand navbar-dark bg-dark mt-4 justify-content-center pb-0" style="position: relative;" id="footer">
+  <div class="col-md-7 col-lg-5 text-center pb-0" style="position: relative; left: 0; right: 0; width: 100%;">
+    <ul class="navbar-nav">
+      <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+      <li class="nav-item"><a href="/news-and-updates" class="nav-link">News and Updates</a></li>
+      <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+      <li class="nav-item"><a href="/contact-us" class="nav-link">Contact Us</a></li>
+      <li class="nav-item"><a href="/our-team" class="nav-link">Our Team</a></li>
+    </ul>
+    <div class="full-width pb-1 mb-0" style="background-color: #000;">
+      <small class="text-light">Copyright &copy;2024; Designed by <span class="text-white-50">Trevor Duhon</span></small>
+    </div>
+  </div>
+</div> -->
+
+<footer class="navbar navbar-expand bg-dark text-center text-white justify-content-center" style="position: relative;">
+  <div class="col-md-7 col-lg-5 text-center">
+  <div class="container p-1 justify-content-center">
+    <ul class=" navbar-nav list-unstyled mb-0 justify-content-center">
+      <li class="nav-item"><a href="/" class="nav-link text-white-50">Home</a></li>
+      <li class="nav-item"><a href="/news-and-updates" class="nav-link text-white-50">News and Updates</a></li>
+      <li class="nav-item"><a href="/about" class="nav-link text-white-50">About</a></li>
+      <li class="nav-item"><a href="/contact-us" class="nav-link text-white-50">Contact Us</a></li>
+      <li class="nav-item"><a href="/our-team" class="nav-link text-white-50">Our Team</a></li>
+    </ul>
+  </div>
+  <div class="text-center p-1 full-width" style="background-color: #000; bottom: -11px;">
+    <small>Copyright &copy;2024; Designed by <span class="text-white-50">Trevor Duhon</span></small>
+  </div>
+  </div>
+</footer>
+
+<!-- <footer class="bg-dark">
+  <div class="footer-nav">
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/news-and-updates">News and Updates</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact-us">Contact Us</a></li>
+      <li><a href="/our-team">Our Team</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <small>Copyright &copy;2024; Designed by <span class="designer">Trevor Duhon</span></small>
+  </div>
+</footer> -->
+
+<script src="https://kit.fontawesome.com/be976d18ad.js" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -34,19 +34,19 @@
           <div class="ml-auto">
             
             {% if group.usergroups[0].is_admin and g.user.id == group.usergroups[0].user_id %}
-            <a href="/users/profile" class="btn btn-outline-secondary">Edit Group</a>
-            <form method="POST" action="/groups/delete/{{group.id}}" class="form-inline">
+            <a href="/groups/{{group.id}}/edit-group" class="btn btn-outline-secondary">Edit Group</a>
+            <form method="POST" action="/groups/{{group.id}}/delete" class="form-inline">
               <button class="btn btn-outline-danger ml-2">Delete Group</button>
             </form>
             {% else %}
 
             {% if group.has_user(g.user) %}
             <a href="/{{group.id}}/films/draft" class="btn btn-outline-success">Draft Film</a>
-            <form method="POST" action="/groups/leave-group/{{ group.id }}">
+            <form method="POST" action="/groups/{{ group.id }}/leave-group">
               <button class="btn btn-primary">Leave Group</button>
             </form>
             {% else %}
-            <form method="POST" action="/groups/join-group/{{ group.id }}">
+            <form method="POST" action="/groups/{{ group.id }}/join-group">
               <button class="btn btn-outline-primary">Join Group</button>
             </form>
             {% endif %}
@@ -77,7 +77,7 @@
           {% if user.id == g.user.id %}
           {% for ug in group.usergroups %}
           {% if ug.group.id == group.id and ug.user.id == g.user.id %}
-          <a href="/{{ug.id}}/films/draft" class="btn btn-outline-success btn-sm">Draft Film</a>
+          <a href="/groupusers/{{ug.id}}/films/draft" class="btn btn-outline-success btn-sm">Draft Film</a>
           {% endif %}
           {% endfor %}
           {% endif %}
@@ -91,6 +91,14 @@
             {% for film in ug.films %}
             <li>
               <a href="/films/{{film.id}}">{{film.title}}</a> -> {{film.total_points}}
+              {% if ug.user.id == g.user.id %}
+              <form method="POST" action="/groupusers/{{ug.id}}/films/{{film.id}}/undraft" class="del-film-form">
+                <button class="btn btn-outline-danger remove-film-button">
+                  <i class="far fa-trash-can text-danger"></i>
+                </button>
+              </form>
+              <!-- <i class="far fa-trash-can text-danger"></i> -->
+              {% endif %}
             </li>
             {% endfor %}
             {% endif %}

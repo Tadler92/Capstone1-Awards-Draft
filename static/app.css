@@ -1,5 +1,8 @@
 body {
   background-color: #e6ecf0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #profile-avatar {
@@ -50,4 +53,87 @@ body {
 #user-group-btns {
   position: absolute;
   right: 15px;
+}
+
+.remove-film-button {
+  border: none;
+}
+.remove-film-button:hover {
+  background-color: #e6ecf0;
+}
+
+.del-film-form {
+  display: inline-block;
+  width: 50px;
+}
+
+footer {
+  margin-top: auto;
+  /* position: relative;
+  left: 0;
+  bottom: 0; */
+  width: 100%;
+  /* background-color: #111; */
+}
+
+.footer {
+  margin-top: auto;
+  /* position: relative;
+  left: 0;
+  bottom: 0; */
+  width: 100%;
+  background-color: #111;
+}
+
+.footer-nav {
+  margin: 15px 0;
+}
+
+.footer-nav ul {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+}
+
+.footer-nav ul li a {
+  color: white;
+  margin: 20px;
+  text-decoration: none;
+  font-size: 1.3em;
+  opacity: 0.7;
+  transition: 0.5s;
+}
+
+.footer-nav ul li a:hover {
+  opacity: 1;
+}
+
+.footer-bottom {
+  background-color: #000;
+  padding: 15px 20px;
+  text-align: center;
+}
+
+footer div small {
+  padding-right: 5px;
+}
+
+.designer {
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 400;
+  margin: 0px 5px;
+}
+
+@media (max-width: 700px){
+  .footer-nav ul {
+    flex-direction: column;
+  }
+
+  .footer-nav ul li {
+    width: 100%;
+    text-align: center;
+    margin: 10px;
+  }
 }

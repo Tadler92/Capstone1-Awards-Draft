@@ -2,10 +2,10 @@ from flask import Flask, request, render_template, redirect, flash, session, jso
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, PendingRollbackError
 
-from models import db, connect_db, text, User, Group, Film, AwardShow, Category, GroupUser, GroupUserFilm
-from forms import AddUserForm, LoginForm, GroupForm, PrivateGroupForm, DraftFilmInGroupForm
+from models import db, connect_db, text, User, Group, Film, AwardShow, Category, GroupUser, GroupUserFilm, Year
+from forms import AddUserForm, LoginForm, GroupForm, PrivateGroupForm, DraftFilmInGroupForm, EditProfileForm, EditGroupForm
 from secret import api_key, CURR_USER_KEY
-from funcs import login_session, logout_session, award_show_category_list, film_in_group_lst
+from funcs import login_session, logout_session, award_show_category_list, film_in_group_lst, merge_choices
 
 import requests
 import json
@@ -23,6 +23,8 @@ debug = DebugToolbarExtension(app)
 
 connect_db(app)
 # db.create_all()
+yr = Year.query.order_by(Year.curr_year.desc()).first()  # gives us 2024
+prev_yr = yr.curr_year - 1  # gives us 2023
 
 
 
@@ -36,6 +38,11 @@ def add_user_to_g():
 
     if CURR_USER_KEY in session:
         g.user = User.query.get(session[CURR_USER_KEY])
+
+    # elif request.endpoint != 'login':
+    elif request.endpoint not in ['login', 'signup', 'homepage', 'static']:
+        flash('Must be logged in first!', 'danger')
+        return redirect('/login')
 
 
 @app.route('/')
@@ -137,6 +144,38 @@ def show_user_info(user_id):
     return render_template('user_info.html', user=user)
 
 
+@app.route('/users/edit-profile', methods=['GET', 'POST'])
+def edit_profile():
+    """Allows current user to edit their profile"""
+
+    if not g.user:
+        flash('Unauthorized Action!', 'danger')
+        return redirect('/')
+    
+    user = g.user
+    form = EditProfileForm(obj=user)
+
+    if form.validate_on_submit():
+        try:
+            user.first_name = form.first_name.data
+            user.last_name = form.last_name.data
+            user.username = form.username.data
+            user.email = form.email.data
+            user.img_url = form.img_url.data
+
+            db.session.commit()
+
+            flash('Profile successfully edited!', 'success')
+            return redirect(f'/users/{user.id}')
+        
+        except IntegrityError:
+            db.session.rollback()
+            flash('Username already taken', 'danger')
+            return render_template('edit_user_info.html', form=form, user_id=user.id)
+    
+    return render_template('edit_user_info.html', form=form, user_id=user.id)
+
+
 @app.route('/users/delete', methods=['POST'])
 def delete_user():
     """Deletes a user"""
@@ -144,6 +183,11 @@ def delete_user():
     if not g.user:
         flash('Unauthorized Action!', 'danger')
         return redirect('/')
+    
+    user = User.query.get_or_404(g.user.id)
+    for ug in user.usergroups:
+        if ug.is_admin:
+            db.session.delete(Group.query.get_or_404(ug.group_id))
     
     logout_session()
 
@@ -159,6 +203,15 @@ def delete_user():
 
 ######################################################################
 # Group routes:
+
+
+@app.route('/groups')
+def show_groups():
+    """Shows a list of groups on the page"""
+
+    groups = Group.query.all()
+
+    return render_template('groups.html', groups=groups)
 
 
 @app.route('/groups/add', methods=['GET', 'POST'])
@@ -233,7 +286,7 @@ def show_group_info(group_id):
     return render_template('group_info.html', group=group)
 
 
-@app.route('/groups/join-group/<int:group_id>', methods=['POST'])
+@app.route('/groups/<int:group_id>/join-group', methods=['POST'])
 def join_group(group_id):
     """Adds the currently logged in user to a group"""
 
@@ -244,7 +297,7 @@ def join_group(group_id):
     group = Group.query.get_or_404(group_id)
 
     if group.is_private:
-        return redirect(f'/groups/join-private/{group.id}')
+        return redirect(f'/groups/{group.id}/join-private')
 
     else:
         if len(group.users) >= 8:
@@ -258,7 +311,7 @@ def join_group(group_id):
         return redirect(f'/groups/{group.id}')
     
 
-@app.route('/groups/join-private/<int:group_id>', methods=['GET', 'POST'])
+@app.route('/groups/<int:group_id>/join-private', methods=['GET', 'POST'])
 def private_auth_form(group_id):
     """Adds a currently logged in user to a private group"""
 
@@ -288,23 +341,8 @@ def private_auth_form(group_id):
 
     return render_template('private_group_form.html', form=form)
 
-    form = LoginForm()
 
-    if form.validate_on_submit():
-        user = User.authenticate(form.username.data,
-                                 form.password.data)
-        
-        if user:
-            login_session(user)
-            flash(f'Welcome Back, {user.username}!', 'success')
-            return redirect(f'users/{user.id}')
-        
-        flash('Username or Password incorrect. Please try again.', 'danger')
-
-    return render_template('login.html', form=form)
-
-
-@app.route('/groups/leave-group/<int:group_id>', methods=['POST'])
+@app.route('/groups/<int:group_id>/leave-group', methods=['POST'])
 def leave_group(group_id):
     """Removes the currently logged in user from a group"""
 
@@ -319,7 +357,35 @@ def leave_group(group_id):
     return redirect(f'/groups/{group.id}')
 
 
-@app.route('/groups/delete/<int:group_id>', methods=['POST'])
+@app.route('/groups/<int:group_id>/edit-group', methods=['GET', 'POST'])
+def edit_group(group_id):
+    """Allows the admin user to edit the group"""
+
+    if not g.user:
+        flash('Unauthorized Action!', 'danger')
+        return redirect('/')
+    
+    group = Group.query.get_or_404(group_id)
+    form = EditGroupForm(obj=group)
+
+    if form.validate_on_submit():
+        try:
+            group.group_name = form.group_name.data
+
+            db.session.commit()
+
+            flash('Profile successfully edited!', 'success')
+            return redirect(f'/groups/{group.id}')
+        
+        except IntegrityError:
+            db.session.rollback()
+            flash('Username already taken', 'danger')
+            return render_template('edit_group_info.html', form=form, group_id=group.id)
+    
+    return render_template('edit_group_info.html', form=form, group_id=group.id)
+
+
+@app.route('/groups/<int:group_id>/delete', methods=['POST'])
 def delete_group(group_id):
     """Deletes a user"""
 
@@ -369,7 +435,7 @@ def show_film_info(film_id):
     return render_template ('film.html', title=title, rating=rating, poster=poster_url, film=film, award_shows=awards_dict)
 
 
-@app.route('/<int:groupuser_id>/films/draft', methods=['GET', 'POST'])
+@app.route('/groupusers/<int:groupuser_id>/films/draft', methods=['GET', 'POST'])
 def draft_film(groupuser_id):
     """Route that will actually allow a user to draft a film once they are in a group"""
 
@@ -380,15 +446,8 @@ def draft_film(groupuser_id):
 
     curr_in_group = film_in_group_lst(group)
     choices = (db.session.query(Film.id, Film.title).filter(Film.id.notin_(curr_in_group)).all())
-    ids = [0]
-    titles = ['-- Choose a film --']
-    for choice in choices:
-        ids.append(choice[0])
-        titles.append(choice[1])
-
-    merged_choices = [(ids[i], titles[i]) for i in range(0, len(ids))]
-
-    form.film.choices = merged_choices
+    
+    form.film.choices = merge_choices(choices)
 
     if form.validate_on_submit():
         groupuser_film = GroupUserFilm(group_user_id=groupuser_id,
@@ -400,6 +459,19 @@ def draft_film(groupuser_id):
         return redirect(f'/groups/{group.id}')
     
     return render_template('draft_film.html', form=form, group=group, gu=gu)
+
+
+@app.route('/groupusers/<int:gu_id>/films/<int:film_id>/undraft', methods=['POST'])
+def remove_drafted_film(gu_id, film_id):
+    """Removes film that a user drafted from their list so they can draft another film"""
+
+    groupuserfilm = db.session.query(GroupUserFilm).filter(GroupUserFilm.group_user_id == gu_id, GroupUserFilm.film_id == film_id).first()
+    
+    db.session.delete(groupuserfilm)
+    db.session.commit()
+
+    flash('Successfully removed film', 'info')
+    return redirect(f'/groups/{groupuserfilm.group_user.group_id}')    
 
 
 

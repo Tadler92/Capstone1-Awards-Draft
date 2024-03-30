@@ -164,6 +164,15 @@ class Group(db.Model):
                 return group
 
         return False
+    
+
+class Year(db.Model):
+    __tablename__ = 'years'
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    curr_year = db.Column(db.Integer)
 
 
 class Film(db.Model):
@@ -174,8 +183,8 @@ class Film(db.Model):
                    autoincrement=True)
     title = db.Column(db.Text,
                       nullable=False)
-    year = db.Column(db.Integer,
-                     nullable=False)
+    year_id = db.Column(db.Integer,
+                        db.ForeignKey('groups.id', ondelete='SET NULL'))
     
     filmnoms = db.relationship('FilmNom', backref='nominated_film')
     filmwins = db.relationship('FilmWin', backref='winning_film')

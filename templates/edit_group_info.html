@@ -17,7 +17,10 @@
         {{ field(placeholder=field.label.text, class="form-control") }}
       {% endfor %}
 
-      <button class="btn btn-primary btn-lg btn-block">Create Group!</button>
+      <div class="edit-btn-area">
+        <button class="btn btn-primary btn-lg btn-block">Edit User</button>
+        <a href="/groups/{{group_id}}" class="btn btn-outline-danger btn-lg btn-block">Cancel</a>
+      </div>
     </form>
   </div>
 </div>
