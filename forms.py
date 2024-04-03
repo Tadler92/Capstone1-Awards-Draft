@@ -47,6 +47,7 @@ class EditProfileForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(max=15)])
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     img_url = StringField('(Optional) Image URL')
+    # img_url = FileField('(Optional) Image')
 
 
 class EditGroupForm(FlaskForm):

@@ -22,10 +22,11 @@ def award_show_category_list(film):
     award_shows = []
     categories = []
 
-    for nomination in film.nom_points:
-        award_shows.append(nomination.nomed_category_show.award_show.show_name)
+    for cat_show in film.category_show_points:
+        if cat_show.nom_or_win == 'nom':
+            award_shows.append(cat_show.showyear.award_show.show_name)
 
-        categories.append(nomination.nomed_category_show.category.category_name)
+            categories.append(cat_show.category.category_name)
 
     print(award_shows)
     print(categories)

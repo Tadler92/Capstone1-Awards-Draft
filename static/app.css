@@ -1,9 +1,22 @@
 body {
-  background-color: #e6ecf0;
-  min-height: 100vh;
+  /* background-color: #e6ecf0; */
+  /* background-color: darkgrey; */
+  /* background-color: #555555; */
+  background-color: #656565;
+  margin: 0;
+  min-height: 150vh;
   display: flex;
   flex-direction: column;
 }
+
+nav {
+  background-color: crimson;
+  border-bottom: solid gold 0;
+}
+
+/* #split-banner {
+  background-color: gold;
+} */
 
 #profile-avatar {
   border-radius: 100%;
@@ -26,6 +39,17 @@ body {
   word-wrap: break-word;
 }
 
+#graph {
+  margin-top: 50px;
+}
+
+.timeline-image {
+  border-radius: 38px;
+  height: 38px;
+  width: 38px;
+  margin-top: 2px;
+}
+
 .full-width {
   width: 100vw;
   margin: 0 -50vw;
@@ -35,7 +59,8 @@ body {
 }
 
 .row.full-width {
-  background-color: #fff;
+  /* background-color: #fff; */
+  background-color: gold;
   margin-top: -80px;
   margin-bottom: 1rem;
   border-bottom: 1px solid #ccc;
@@ -48,6 +73,58 @@ body {
 #user-groups {
   display: block;
   margin-right: 20px;
+}
+#user-groups ul {
+  list-style-type: none;
+}
+
+#user-groups ul li a {
+  color: white;
+  text-decoration: none;
+}
+#user-groups ul li a:hover {
+  opacity: 0.7;
+}
+
+.user-group-name {
+  margin-left: 5px;
+}
+
+.user-film-name {
+  margin-left: 15px;
+}
+
+table {
+  border-spacing: 20px;
+  table-layout: fixed;
+}
+
+table td, th {
+  width: 150px
+}
+
+table .point-column {
+  width: 60px;
+}
+
+#points-breakdown {
+  border: 1px solid black;
+  width: 100px;
+  margin-left: 0;
+  margin-bottom: 15px;
+  padding-left: 5px;
+  border-spacing: 20px;
+  table-layout: fixed;
+}
+
+#points-breakdown td,
+th {
+  padding-left: 5px;
+  width: 200px;
+}
+
+#points-breakdown .points-columns {
+  width: 80px;
 }
 
 #user-group-btns {
@@ -67,13 +144,15 @@ body {
   width: 50px;
 }
 
-footer {
+#footer {
   margin-top: auto;
   /* position: relative;
   left: 0;
   bottom: 0; */
   width: 100%;
   /* background-color: #111; */
+  background-color: crimson;
+  border-top: solid gold 4px;
 }
 
 .footer {
@@ -104,12 +183,14 @@ footer {
   transition: 0.5s;
 }
 
-.footer-nav ul li a:hover {
-  opacity: 1;
+#footer div div ul li a:hover {
+  opacity: 0.5;
 }
 
 .footer-bottom {
-  background-color: #000;
+  /* background-color: #000; */
+  background-color: maroon;
+  right: -50px;
   padding: 15px 20px;
   text-align: center;
 }

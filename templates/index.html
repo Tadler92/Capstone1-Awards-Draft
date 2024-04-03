@@ -2,10 +2,15 @@
 
 {% block content %}
 
-<h1>See all the groups!</h1>
-<p>To join a group, just click the group name, click "Join Group", and enter the group password (if there is one).</p>
+<h1>Welcome to the Movie Awards Draft Site!!</h1>
+<p>
+  To begin, please either
+  <a href="/signup" class="btn btn-primary btn-sm">signup</a> 
+  or 
+  <a href="/login" class="btn btn-primary btn-sm">login</a>
+</p>
 
-<ul>
+<!-- <ul>
 {% for group in groups %}
   <li>
      <a href="/groups/{{ group.id }}">{{ group.group_name }}</a>
@@ -13,6 +18,6 @@
 {% endfor %}
 </ul>
 
-<p><a class="btn btn-primary" href="/groups/add">Add a group</a></p>
+<p><a class="btn btn-primary" href="/groups/add">Add a group</a></p> -->
 
 {% endblock %}

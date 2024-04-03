@@ -41,7 +41,7 @@
             {% else %}
 
             {% if group.has_user(g.user) %}
-            <a href="/{{group.id}}/films/draft" class="btn btn-outline-success">Draft Film</a>
+            <!-- <a href="/{{group.id}}/films/draft" class="btn btn-outline-success">Draft Film</a> -->
             <form method="POST" action="/groups/{{ group.id }}/leave-group">
               <button class="btn btn-primary">Leave Group</button>
             </form>
@@ -66,6 +66,9 @@
     
     <!-- <a href="https://imgbb.com/"><img src="https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg" alt="Empty-Profile-Pic" border="0"></a><br /><a target='_blank' href='https://dedupelist.com/'>exclude duplicates</a><br />
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/1200px-Cat_August_2010-4.jpg" alt="an image again"> -->
+
+    <div id="graph">
+    </div>
   </div>
 
   <div id="user-groups">
@@ -73,7 +76,10 @@
     <ul>
       {% for user in group.users %}
         <li>
-          <a href="/users/{{ user.id }}">{{ user.username }}</a>
+          <a href="/users/{{ user.id }}">
+            <img src="{{user.img_url}}" alt="Profile Pic for {{user.username}}" class="timeline-image">
+          </a>
+          <a href="/users/{{ user.id }}" class="user-group-name">{{ user.username }}</a>
           {% if user.id == g.user.id %}
           {% for ug in group.usergroups %}
           {% if ug.group.id == group.id and ug.user.id == g.user.id %}
@@ -82,27 +88,58 @@
           {% endfor %}
           {% endif %}
 
-          <ul>
-            {% for ug in group.usergroups %}
+          <table id="{{user.name}}-table">
+            <thead>
+              <th class="film-column">Films</th>
+              <th class="point-column">Points</th>
+            </thead>
+            <tbody>
+              {% for ug in group.usergroups %}
+              {% if ug.user.id == user.id %}
+              {% for film in ug.films %}
+              <tr id="{{film.id}}-row">
+                <td class="film-column">
+                  <a href="/films/{{film.id}}" class="user-film-name">{{film.title}}</a>
+                </td>
+                <td class="point-column">{{film.total_points}}</td>
+                {% if ug.user.id == g.user.id %}
+                <td class="delete-column">
+                  <form method="POST" action="/groupusers/{{ug.id}}/films/{{film.id}}/undraft" class="del-film-form">
+                    <button class="btn btn-outline-danger remove-film-button">
+                      <i class="far fa-trash-can text-danger"></i>
+                    </button>
+                  </form>
+                </td>
+                
+                {% endif %}
+              </tr>
+              {% endfor %}
+              {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <!-- <ul>
+            {% for ug in group.usergroups %} -->
             <!-- {% if ug.group.id == group.id and ug.user.id == g.user.id %}
             <a href="/{{ug.id}}/films/draft" class="btn btn-outline-success">Draft Film</a>
             {% endif %} -->
-            {% if ug.user.id == user.id %}
+            <!-- {% if ug.user.id == user.id %}
             {% for film in ug.films %}
             <li>
-              <a href="/films/{{film.id}}">{{film.title}}</a> -> {{film.total_points}}
+              <a href="/films/{{film.id}}" class="user-film-name">{{film.title}}</a> -> {{film.total_points}}
               {% if ug.user.id == g.user.id %}
               <form method="POST" action="/groupusers/{{ug.id}}/films/{{film.id}}/undraft" class="del-film-form">
                 <button class="btn btn-outline-danger remove-film-button">
                   <i class="far fa-trash-can text-danger"></i>
                 </button>
-              </form>
+              </form> -->
               <!-- <i class="far fa-trash-can text-danger"></i> -->
-              {% endif %}
+              <!-- {% endif %}
             </li>
             {% endfor %}
             {% endif %}
-            {% endfor %}
+            {% endfor %} -->
             <!-- {% for ug in user.usergroups %}
             {% if ug.id == group.id %}
             {% for film in ug.groupuserfilms %}
@@ -112,7 +149,7 @@
             {% endfor %}
             {% endif %}
             {% endfor %} -->
-          </ul>
+          <!-- </ul> -->
         </li>
       {% endfor %}
     </ul>
@@ -127,4 +164,25 @@
 
 </div>
 
+<!-- <script>
+  google.charts.load("current", {packages: ['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+  function drawChart() {
+    const data = google.visualization.arrayToDataTable([
+      ['Name', 'Points', {role: 'style'}, {role: 'annotation'}],
+      ['Trevor', 100, 'blue', 'Trevor'],
+      ['Kaylyn', 50, 'green', 'Kaylyn'],
+      ['Travis', 80, 'red', 'Travis'],
+      ['Kellie', 120, 'purpls', 'Kellie']
+    ]);
+
+    const options = {
+      title: 'Points Leaders'
+    };
+
+    const chart = new 
+    google.visualization.ColumnChart(document.getElementById('graph'));
+    chart.draw(data, options);
+  }
+</script> -->
 {% endblock %}

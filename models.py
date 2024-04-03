@@ -174,6 +174,8 @@ class Year(db.Model):
                    autoincrement=True)
     curr_year = db.Column(db.Integer)
 
+    films = db.relationship('Film', backref='year')
+
 
 class Film(db.Model):
     __tablename__ = 'films'
@@ -184,10 +186,11 @@ class Film(db.Model):
     title = db.Column(db.Text,
                       nullable=False)
     year_id = db.Column(db.Integer,
-                        db.ForeignKey('groups.id', ondelete='SET NULL'))
+                        db.ForeignKey('years.id', ondelete='SET NULL'))
     
-    filmnoms = db.relationship('FilmNom', backref='nominated_film')
-    filmwins = db.relationship('FilmWin', backref='winning_film')
+    # filmnoms = db.relationship('FilmNom', backref='nominated_film')
+    # filmwins = db.relationship('FilmWin', backref='winning_film')
+    filmpoints = db.relationship('FilmPoint', backref='points_for_film')
 
     groupuserfilms = db.relationship('GroupUserFilm', backref='chosen_film')
 
@@ -195,7 +198,7 @@ class Film(db.Model):
         """Will represent the returned object as <User id=<id> title=<title> year=<year>>"""
 
         u = self
-        return f"<Film id={u.id} title={u.title} year={u.year}"
+        return f"<Film id={u.id} title={u.title} year={u.year_id}"
     
 
     def _total_points(self):
@@ -204,8 +207,10 @@ class Film(db.Model):
         pts_lst = []
         total = 0
 
-        for nompt in self.nom_points:
+        for nompt in self.category_show_points:
             pts_lst.append(nompt.points)
+        # for nompt in self.nom_points:
+        #     pts_lst.append(nompt.points)
 
         print(pts_lst)
         for point in pts_lst:
@@ -229,9 +234,28 @@ class AwardShow(db.Model):
     show_name = db.Column(db.Text,
                       nullable=False)
     
-    showcategories = db.relationship('CategoryShow', backref='award_show')
+    showyears = db.relationship('ShowYear', backref='award_show')
     
-    categories = db.relationship('Category', secondary='categories_shows', backref='award_shows')
+    # categories = db.relationship('Category', secondary='categories_shows', backref='award_shows')
+
+
+class ShowYear(db.Model):
+    __tablename__ = 'shows_years'
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+
+    award_show_id = db.Column(db.Integer,db.ForeignKey('award_shows.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+
+    year_id = db.Column(db.Integer,
+                        db.ForeignKey('groups.id', ondelete='CASCADE'))
+
+    show_date = db.Column(db.Date, nullable=False)
+
+    categories = db.relationship('Category', secondary='categories_show_points', backref='shows_years')
+
+    showcategories = db.relationship('CategoryShowPoint', backref='showyear')
     
 
 class Category(db.Model):
@@ -243,7 +267,8 @@ class Category(db.Model):
     category_name = db.Column(db.Text,
                       nullable=False)
     
-    showcategories = db.relationship('CategoryShow', backref='category')
+    showcategories = db.relationship('CategoryShowPoint', backref='category')
+    # showcategories = db.relationship('CategoryShow', backref='category')
 
     
 
@@ -267,81 +292,122 @@ class GroupUser(db.Model):
     films = db.relationship('Film', secondary='group_users_films', backref='groups_users')
 
 
-class CategoryShow(db.Model):
+# class CategoryShow(db.Model):
+#     """Maps an award show with a category"""
+
+#     __tablename__ = 'categories_shows'
+
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+#     category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+
+#     award_show_id = db.Column(db.Integer, db.ForeignKey('award_shows.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+
+#     nompoints = db.relationship('NomPoint', backref='nomed_category_show')
+#     winpoints = db.relationship('WinPoint', backref='won_category_show')
+
+
+class CategoryShowPoint(db.Model):
     """Maps an award show with a category"""
 
-    __tablename__ = 'categories_shows'
+    __tablename__ = 'categories_show_points'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id', ondelete='CASCADE'), primary_key=True, nullable=False)
 
-    award_show_id = db.Column(db.Integer, db.ForeignKey('award_shows.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+    show_year_id = db.Column(db.Integer, db.ForeignKey('shows_years.id', ondelete='CASCADE'), primary_key=True, nullable=False)
 
-    nompoints = db.relationship('NomPoint', backref='nomed_category_show')
-    winpoints = db.relationship('WinPoint', backref='won_category_show')
-
-
-class NomPoint(db.Model):
-    """Maps a category with nom points"""
-
-    __tablename__ = 'nom_points'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-
-    category_show_id = db.Column(db.Integer, db.ForeignKey('categories_shows.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+    nom_or_win = db.Column(db.Text, nullable=False)
 
     points = db.Column(db.Integer, nullable=False)
 
-    filmnoms = db.relationship('FilmNom', backref='nom_point')
+    filmspoints = db.relationship('FilmPoint', backref='category_show_point')
+
+    films = db.relationship('Film', secondary='films_points', backref='category_show_points')
+
+    # nompoints = db.relationship('NomPoint', backref='nomed_category_show')
+    # winpoints = db.relationship('WinPoint', backref='won_category_show')
+
+
+# class NomPoint(db.Model):
+#     """Maps a category with nom points"""
+
+#     __tablename__ = 'nom_points'
+
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+#     category_show_id = db.Column(db.Integer, db.ForeignKey('categories_shows.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+
+#     points = db.Column(db.Integer, nullable=False)
+
+#     filmnoms = db.relationship('FilmNom', backref='nom_point')
     
-    films = db.relationship('Film', secondary='films_noms', backref='nom_points')
+#     films = db.relationship('Film', secondary='films_noms', backref='nom_points')
 
 
-class WinPoint(db.Model):
-    """Maps a category with win points"""
+# class WinPoint(db.Model):
+#     """Maps a category with win points"""
 
-    __tablename__ = 'win_points'
+#     __tablename__ = 'win_points'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    category_show_id = db.Column(db.Integer, db.ForeignKey('categories_shows.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+#     category_show_id = db.Column(db.Integer, db.ForeignKey('categories_shows.id', ondelete='CASCADE'), primary_key=True, nullable=False)
 
-    points = db.Column(db.Integer, nullable=False)
+#     points = db.Column(db.Integer, nullable=False)
 
-    filmwins = db.relationship('FilmWin', backref='win_point')
+#     filmwins = db.relationship('FilmWin', backref='win_point')
     
-    films = db.relationship('Film', secondary='films_wins', backref='win_points')
+#     films = db.relationship('Film', secondary='films_wins', backref='win_points')
 
 
-class FilmNom(db.Model):
+# class FilmNom(db.Model):
+#     """Maps a film with a nomination"""
+
+#     __tablename__ = 'films_noms'
+
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
+#     film_id = db.Column(db.Integer, db.ForeignKey('films.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+
+#     nom_points_id = db.Column(db.Integer, db.ForeignKey('nom_points.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+
+#     def __repr__(self):
+#         """Will represent the returned object as <User id=<id> title=<title> year=<year>>"""
+
+#         u = self
+#         return f"<FilmNom id={u.id} film_id={u.film_id} nom_points_id={u.nom_points_id}"
+
+
+class FilmPoint(db.Model):
     """Maps a film with a nomination"""
 
-    __tablename__ = 'films_noms'
+    __tablename__ = 'films_points'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
     film_id = db.Column(db.Integer, db.ForeignKey('films.id', ondelete='CASCADE'), primary_key=True, nullable=False)
 
-    nom_points_id = db.Column(db.Integer, db.ForeignKey('nom_points.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+    points_id = db.Column(db.Integer, db.ForeignKey('categories_show_points.id', ondelete='CASCADE'), primary_key=True, nullable=False)
 
     def __repr__(self):
         """Will represent the returned object as <User id=<id> title=<title> year=<year>>"""
 
         u = self
-        return f"<FilmNom id={u.id} film_id={u.film_id} nom_points_id={u.nom_points_id}"
+        return f"<FilmNom id={u.id} film_id={u.film_id} nom_points_id={u.points_id}"
 
 
-class FilmWin(db.Model):
-    """Maps a film with a win"""
+# class FilmWin(db.Model):
+#     """Maps a film with a win"""
 
-    __tablename__ = 'films_wins'
+#     __tablename__ = 'films_wins'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    film_id = db.Column(db.Integer, db.ForeignKey('films.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+#     film_id = db.Column(db.Integer, db.ForeignKey('films.id', ondelete='CASCADE'), primary_key=True, nullable=False)
 
-    win_points_id = db.Column(db.Integer, db.ForeignKey('win_points.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+#     win_points_id = db.Column(db.Integer, db.ForeignKey('win_points.id', ondelete='CASCADE'), primary_key=True, nullable=False)
 
 
 class GroupUserFilm(db.Model):

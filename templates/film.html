@@ -5,40 +5,9 @@
 <h1>{{title}}</h1>
 <h4>{{rating}}</h4>
 
-<img src="{{poster}}" alt="Poster for {{title}}">
+<img src="{{poster}}" alt="Poster for {{title}}" class="mb-5">
 
-<div class="awards-area">
-  <a href="/films/{{ film.id }}">@{{ film.title }}</a>
-  <span class="text-muted">{{ film.filmnoms }}</span>
-  <p>{{ film.filmwins }}</p>
-</div>
 
-<div>
-  <ul>
-    {% for nomination in film.filmnoms %}
-    <li>
-      {{nomination.nom_point.nomed_category_show.award_show.show_name}}
-      --
-      {{nomination.nom_point.nomed_category_show.category.category_name}}
-      --
-      {{nomination.nom_point.points}}
-    </li>
-    {% endfor %}
-  </ul>
-</div>
-<div>
-  <ul>
-    {% for win in film.filmwins %}
-    <li>
-      {{win.win_point.won_category_show.award_show.show_name}}
-      --
-      {{win.win_point.won_category_show.category.category_name}}
-      --
-      {{win.win_point.points}}
-    </li>
-    {% endfor %}
-  </ul>
-</div>
 
 {% for show in award_shows %}
 <table class="table">
@@ -55,21 +24,21 @@
     <tr>
       <td>{{category}}</td>
       <td>
-        {% for nomination in film.filmnoms %}
-          {% if nomination.nom_point.nomed_category_show.award_show.show_name == show and nomination.nom_point.nomed_category_show.category.category_name == category %}
+        {% for show_cat in film.category_show_points %}
+          {% if show_cat.showyear.award_show.show_name == show and show_cat.category.category_name == category and show_cat.nom_or_win == 'nom' %}
 
-          {{nomination.nom_point.points}}
+          {{show_cat.points}}
 
 
           {% endif %}
         {% endfor %}
       </td>
       
-      <td>
-        {% for win in film.filmwins %}
-          {% if win.win_point.won_category_show.award_show.show_name == show and win.win_point.won_category_show.category.category_name == category %}
+      <td class="wins-cell">
+        {% for show_cat in film.category_show_points %}
+          {% if show_cat.showyear.award_show.show_name == show and show_cat.category.category_name == category and show_cat.nom_or_win == 'win' %}
           
-            {{win.win_point.points}}
+            {{show_cat.points}}
 
           {% endif %}
         {% endfor %}

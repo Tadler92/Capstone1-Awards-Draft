@@ -1,21 +1,32 @@
-from flask import Flask, request, render_template, redirect, flash, session, jsonify, g
+# import os
+from flask import Flask, request, render_template, redirect, flash, session, jsonify, g, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, PendingRollbackError
 
-from models import db, connect_db, text, User, Group, Film, AwardShow, Category, GroupUser, GroupUserFilm, Year
+from models import db, connect_db, text, User, Group, Film, AwardShow, Category, GroupUser, GroupUserFilm, Year, ShowYear, CategoryShowPoint, FilmPoint
 from forms import AddUserForm, LoginForm, GroupForm, PrivateGroupForm, DraftFilmInGroupForm, EditProfileForm, EditGroupForm
 from secret import api_key, CURR_USER_KEY
 from funcs import login_session, logout_session, award_show_category_list, film_in_group_lst, merge_choices
 
+# from werkzeug.utils import secure_filename
+# from flask_uploads import configure_uploads, IMAGES, UploadSet
+
 import requests
 import json
 # from funcs import add_tags_to_db, add_tags_to_lst, tag_lst, lst_to_str
+UPLOAD_FOLDER = '/static/photos'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///awards_draft'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
+
+# app.config['ACCESS-CONTROL-ALLOW'] = True
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# images = UploadSet('images', IMAGES)
+# configure_uploads(app, images)
 
 app.config['SECRET_KEY'] = "chickenzarecool21837"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
@@ -43,15 +54,6 @@ def add_user_to_g():
     elif request.endpoint not in ['login', 'signup', 'homepage', 'static']:
         flash('Must be logged in first!', 'danger')
         return redirect('/login')
-
-
-@app.route('/')
-def homepage():
-    """Shows homepage (which will have a list of groups)"""
-
-    groups = Group.query.all()
-
-    return render_template('index.html', groups=groups)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -156,6 +158,11 @@ def edit_profile():
     form = EditProfileForm(obj=user)
 
     if form.validate_on_submit():
+    
+        # print(form.img_url.data)
+        # filename = images.save(form.img_url.data)
+        # print(f'Filename: {filename}')
+        
         try:
             user.first_name = form.first_name.data
             user.last_name = form.last_name.data
@@ -164,6 +171,7 @@ def edit_profile():
             user.img_url = form.img_url.data
 
             db.session.commit()
+
 
             flash('Profile successfully edited!', 'success')
             return redirect(f'/users/{user.id}')
@@ -420,7 +428,7 @@ def show_film_info(film_id):
     print('********', awards_dict, '*********')
     
 
-    resp = requests.get(f'http://www.omdbapi.com?apikey={api_key}&t={film.title}')
+    resp = requests.get(f'http://www.omdbapi.com?apikey={api_key}&t={film.title}&y={film.year.curr_year}')
 
     # print('********', resp, '*********')
 
@@ -445,7 +453,7 @@ def draft_film(groupuser_id):
     form = DraftFilmInGroupForm()
 
     curr_in_group = film_in_group_lst(group)
-    choices = (db.session.query(Film.id, Film.title).filter(Film.id.notin_(curr_in_group)).all())
+    choices = (db.session.query(Film.id, Film.title).filter(Film.id.notin_(curr_in_group), Film.year_id == (yr.id - 1)).all())
     
     form.film.choices = merge_choices(choices)
 
@@ -481,11 +489,27 @@ def remove_drafted_film(gu_id, film_id):
 # Homepage and error page routes:
 
 
+@app.route('/')
+def homepage():
+    """Shows homepage that users can visit without having an account"""
+
+    groups = Group.query.all()
+
+    return render_template('index.html', groups=groups)
+
+
 @app.route('/how-to-play')
 def how_to_play():
     """Shows page to explain how to use application after a user signs up"""
 
     return render_template('how_to.html')
+
+
+@app.route('/about')
+def about():
+    """Shows the about page for the website"""
+
+    return render_template('about.html')
 
 
 

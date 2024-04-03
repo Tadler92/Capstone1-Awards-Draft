@@ -1,0 +1,332 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>About Page</h1>
+<h2>What is the Awards Draft?</h2>
+<p>The Awards Draft an annual draft (like Fantasy Football) for Movies. A group of drafters of any amount (you can
+  have 2 or 20 if you wanted to)get together to draft 8 films each of any of the films released in the previous year
+  that are up for Awards this year (so, in the year 2024, any film released to the public in 2023 can be drafted).</p>
+
+<p>Once a group of drafters have selected their desired films, the points begin racking up. As films get nominated for
+  certain awards and awards shows, they will receive the amount of points associated with that award show's award. To
+  see the exact breakdown of Awards, Award Shows and Points, please see the "Points Breakdown" table below.
+</p>
+
+<h2>How did you come up with this idea?</h2>
+<p>I wish I could take credit for this idea (with as much as I love movies and watching the awards shows that honor
+  them), but this is something that stemmed from a podcast I enjoyed listening to <b>Box Office Party</b> (when I
+  learned about this podcast and this draft that they did, it was originally called the FMLPOD, but they eventually
+  changed
+  names because Fantasy Movie League shutdown during the COVID Pandemic...).</p>
+
+<p>I enjoyed listening to their episodes in general, but also loved the fun and competitiveness that draft brought to
+  their show, and I really wanted to do it with my friends. Honestly, I would've loved to have join them on the show
+  doing the draft, but my friends are just as great, haha! So, I took their already laid out point system, and added a
+  few more awards shows and points to it that way there could be a few more updates to the draft than just 3 shows
+  announcing their nominees and winners and having them so spread apart from each other.</p>
+
+<p>The first few years, I just kept track of everything on an Excel spreadsheet on my computer, then in 2023/2024, I
+  upgraded to a website that my friends and I could access any time we wanted. The (eventual) final step is to make
+  the website interactive and update automatically when a new nomination/win annoucement is made, but we're taking one
+  step at a time!</p>
+
+<h2>How many points can my film recieve?</h2>
+<p>This Points Breakdown table will show you all the points a film can receive if it's nominated and wins an award at
+  the various award shows listed.</p>
+
+  <h3>Points Breakdown</h3>
+  <table id="points-breakdown">
+    <thead>
+      <tr>
+        <th>Oscars</th>
+        <th class="points-columns dates">Noms</th>
+        <th class="points-columns dates">Wins</th>
+        <th>Golden Globes</th>
+        <th class="points-columns dates">Noms</th>
+        <th class="points-columns dates">Wins</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Best Picture</td>
+        <td class="pts">8</td>
+        <td class="pts">8</td>
+        <td>Best Drama</td>
+        <td class="pts">5</td>
+        <td class="pts">5</td>
+      </tr>
+      <tr>
+        <td>Best Director</td>
+        <td class="pts">6</td>
+        <td class="pts">6</td>
+        <td>Best Musical/Comedy</td>
+        <td class="pts">5</td>
+        <td class="pts">5</td>
+      </tr>
+      <tr>
+        <td>Best Actress</td>
+        <td class="pts">6</td>
+        <td class="pts">6</td>
+        <td>Best Actor Drama</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+      </tr>
+      <tr>
+        <td>Best Actor</td>
+        <td class="pts">6</td>
+        <td class="pts">6</td>
+        <td>Best Actress Drama</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+      </tr>
+      <tr>
+        <td>Best Animated Feature</td>
+        <td class="pts">6</td>
+        <td class="pts">6</td>
+        <td>Best Actor Musical/Comedy</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+      </tr>
+      <tr>
+        <td>Best Supporting Actress</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+        <td>Best Actress Musical/Comedy</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+      </tr>
+      <tr>
+        <td>Best Supporting Actor</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+        <td>Best Director</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+      </tr>
+      <tr>
+        <td>Best Original Screenplay</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+        <td>Best Animated Feature</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+      </tr>
+      <tr>
+        <td>Best Adapted Screenplay</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+        <td>Best Supporting Actor</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+      </tr>
+      <tr>
+        <td>Best Documentary</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+        <td>Best Supporting Actress</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+      </tr>
+      <tr>
+        <td>Best Original Score</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+        <td>Best Screenplay</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+      </tr>
+      <tr>
+        <td>Best Original Song</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+        <td>Best Original Score</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+      </tr>
+      <tr>
+        <td>Best Foreign Film</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+        <td>Best Original Song</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+      </tr>
+      <tr>
+        <td>Best Cinematography</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Best Foreign Language Film</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+      </tr>
+      <tr>
+        <td>Best Costume Design</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <th>Razzies</th>
+        <th class="dates">Noms</th>
+        <th class="dates">Wins</th>
+      </tr>
+      <tr>
+        <td>Best Makeup and Hairstyling</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Worst Picture</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+      </tr>
+      <tr>
+        <td>Best Production Design</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Worst Actor</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+      </tr>
+      <tr>
+        <td>Best Sound</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Worst Actress</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+      </tr>
+      <tr>
+        <td>Best Visual Effects</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Worst Director</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+      </tr>
+      <tr>
+        <td>Best Film Editing</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Worst Supporting Actor</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+      </tr>
+      <tr>
+        <th>DGA Awards</th>
+        <th class="dates">Noms</th>
+        <th class="dates">Wins</th>
+        <td>Worst Supporting Actress</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+      </tr>
+      <tr>
+        <td>Best Director Theatrical Film</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+        <td>Worst Screenplay</td>
+        <td class="pts">1</td>
+        <td class="pts">1</td>
+      </tr>
+      <tr>
+        <td>Best First-Time Director</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Worst Prequel/Sequel/Remake</td>
+        <td class="pts">1</td>
+        <td class="pts">1</td>
+      </tr>
+      <tr>
+        <td>Best Director Documentary</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Worst Screen Combo</td>
+        <td class="pts">1</td>
+        <td class="pts">1</td>
+      </tr>
+      <tr>
+        <th>SAG Awards</th>
+        <th class="dates">Noms</th>
+        <th class="dates">Wins</th>
+        <td>Razzie Redeemer Award</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+      </tr>
+      <tr>
+        <td>Best Ensemble</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+        <th>Critics Choice Awards</th>
+        <th class="dates">Noms</th>
+        <th class="dates">Wins</th>
+      </tr>
+      <tr>
+        <td>Best Actress</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+        <td>Best Picture</td>
+        <td class="pts">4</td>
+        <td class="pts">4</td>
+      </tr>
+      <tr>
+        <td>Best Actor</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+        <td>Best Actor</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+      </tr>
+      <tr>
+        <td>Best Supporting Actress</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Best Actress</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+      </tr>
+      <tr>
+        <td>Best Supporting Actor</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Best Director</td>
+        <td class="pts">3</td>
+        <td class="pts">3</td>
+      </tr>
+      <tr>
+        <td>Best Stunts</td>
+        <td class="pts">1</td>
+        <td class="pts">1</td>
+        <td>Best Supporting Actor</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+      </tr>
+      <tr>
+        <th>WGA Awards</th>
+        <th class="dates">Noms</th>
+        <th class="dates">Wins</th>
+        <td>Best Supporting Actress</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+      </tr>
+      <tr>
+        <td>Best Original Screenplay</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Best Acting Ensemble</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+      </tr>
+      <tr>
+        <td>Best Adapted Screenplay</td>
+        <td class="pts">2</td>
+        <td class="pts">2</td>
+        <td>Best Original Screenplay</td>
+        <td class="pts">1</td>
+        <td class="pts">1</td>
+      </tr>
+        <td>Best Documentary Screenplay</td>
+        <td class="pts">1</td>
+        <td class="pts">1</td>
+        <td>Best Adapted Screenplay</td>
+        <td class="pts">1</td>
+        <td class="pts">1</td>
+      </tr>
+    </tbody>
+  </table>
+{% endblock %}
