@@ -40,7 +40,11 @@ nav {
 }
 
 #graph {
+  position: relative;
   margin-top: 50px;
+  width: 200px;
+  height: 300px;
+  left: -30px;
 }
 
 .timeline-image {
@@ -48,6 +52,11 @@ nav {
   height: 38px;
   width: 38px;
   margin-top: 2px;
+}
+
+.timeline-img-link {
+  width: 50px;
+  display: inline-block;
 }
 
 .full-width {
@@ -100,11 +109,14 @@ table {
 }
 
 table td, th {
-  width: 150px
+  width: 50px
 }
 
 table .point-column {
   width: 60px;
+}
+table .film-column {
+  width: 300px;
 }
 
 #points-breakdown {
@@ -218,3 +230,33 @@ footer div small {
     margin: 10px;
   }
 }
+
+div i.fas {
+  display: none;
+}
+
+div img {
+  display: block;
+}
+
+div.show-icon i.fas {
+  display: inline-block;
+  background-color: green;
+  font-size: 70px;
+  border-radius: 100px;
+  padding: 80px 53px 40px 50px;
+}
+
+div.show-icon img {
+  display: none;
+}
+
+.user-full-name {
+  font-size: 35px;
+}
+
+/* i.fa-user-group {
+  font-size: 70px;
+  border-radius: 100px;
+  padding: 80px 53px 40px 50px;
+} */

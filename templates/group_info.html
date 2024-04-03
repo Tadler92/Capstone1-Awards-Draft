@@ -2,35 +2,21 @@
 
 {% block content %}
 
+<div class="show-icon" id="profile-avatar">
+  <img src="https://fontawesome.com/icons/user-group?f=classic&s=solid" alt="Image for example">
+  <i class="fas {{group.image.image}}"></i>
 
-<img src="https:kfjlsfj.com" alt="Image for example" id="profile-avatar">
+
+  <!-- <i class="fas fa-person-through-window"></i>
+  <i class="fas fa-tv"></i>
+  <i class="fas fa-user-ninja"></i>
+  <i class="fas fa-user-secret"></i> -->
+</div>
 <div class="row full-width">
   <div class="container">
     <div class="row justify-content-end">
       <div class="col-9">
         <ul class="user-stats nav nav-pills">
-          <li class="stat">
-            <p class="small">Messages</p>
-            <h4>
-              
-            </h4>
-          </li>
-          <li class="stat">
-            <p class="small">Following</p>
-            <h4>
-              
-            </h4>
-          </li>
-          <li class="stat">
-            <p class="small">Followers</p>
-            <h4>
-              <!-- {{g.user}} -->
-            </h4>
-          </li>
-          <li class="stat">
-            <p class="small">Likes</p>
-            <h4></h4>
-          </li>
           <div class="ml-auto">
             
             {% if group.usergroups[0].is_admin and g.user.id == group.usergroups[0].user_id %}
@@ -60,7 +46,7 @@
 
 <div class="row">
   <div class="col-sm-3">
-    <h4 id="sidebar-username">@{{ group.group_name }}</h4>
+    <h4 id="sidebar-username">{{ group.group_name }}</h4>
     
     <!-- <img src="https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg" alt="an image again"> -->
     
@@ -76,7 +62,7 @@
     <ul>
       {% for user in group.users %}
         <li>
-          <a href="/users/{{ user.id }}">
+          <a href="/users/{{ user.id }}" class="timeline-img-link">
             <img src="{{user.img_url}}" alt="Profile Pic for {{user.username}}" class="timeline-image">
           </a>
           <a href="/users/{{ user.id }}" class="user-group-name">{{ user.username }}</a>
@@ -88,7 +74,7 @@
           {% endfor %}
           {% endif %}
 
-          <table id="{{user.name}}-table">
+          <table id="{{user.username}}-table">
             <thead>
               <th class="film-column">Films</th>
               <th class="point-column">Points</th>
@@ -185,4 +171,87 @@
     chart.draw(data, options);
   }
 </script> -->
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load("current", {packages: ['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  let tableObj = {};
+  let colors = [
+    'red',
+    'blue',
+    'orange',
+    'green',
+    'purple',
+    'yellow',
+    'gray',
+    'teal',
+    'black',
+    'silver'
+  ]
+  // let random = Math.floor(Math.random() * colors.length);
+
+  let $tables = $('table');
+  console.log($tables);
+  console.log($tables.length);
+  for (let table of $tables) {
+    console.log(table.id)
+    let total = 0;
+    let random = Math.floor(Math.random() * colors.length);
+
+    for (let row of table.childNodes[3].childNodes) {
+      if (row.innerText !== undefined) {
+        if (String(parseInt(row.innerText.slice(-3))) === 'NaN'){
+          console.log(parseInt(row.innerText.slice(-2)))
+          total += parseInt(row.innerText.slice(-2))
+          console.log(row.innerText)
+          // console.log('first if')
+        }
+        else if (String(parseInt(row.innerText.slice(-4))) === 'NaN'){
+          console.log(parseInt(row.innerText.slice(-3)))
+          total += parseInt(row.innerText.slice(-3))
+          console.log(row.innerText)
+          // console.log('second if')
+        }
+        // console.log(typeof(row.innerText))
+        // console.log(row.innerText)
+        // console.log(row.innerText.slice(-3))
+        else {
+          console.log(row.innerText)
+          console.log(row.innerText.slice(-4))
+          console.log(parseInt(row.innerText.slice(-3)))
+          total += parseInt(row.innerText.slice(-4))
+        }
+      }
+    }
+    console.log(total)
+    console.log(table.id.split('-').shift())
+    tableObj[`${table.id.split('-').shift()}`] = [`${table.id.split('-').shift()}`, total, colors[random], `${table.id.split('-').shift()}`];
+  }
+  console.log(tableObj)
+  let chartVals = Object.values(tableObj);
+  chartVals.unshift(['Name', 'Points', {role: 'style'}, {role: 'annotation'}])
+
+  function drawChart() {
+    // const data = google.visualization.arrayToDataTable([
+    //   ['Name', 'Points', {role: 'style'}, {role: 'annotation'}],
+    //   ['Trevor', 100, 'blue', 'Trevor'],
+    //   ['Kaylyn', 50, 'green', 'Kaylyn'],
+    //   ['Travis', 80, 'red', 'Travis'],
+    //   ['Kellie', 120, 'purple', 'Kellie']
+    // ]);
+    const data = google.visualization.arrayToDataTable(chartVals);
+
+    const options = {
+      title: 'Points Leaders'
+    };
+
+    const chart = new 
+    google.visualization.ColumnChart(document.getElementById('graph'));
+    chart.draw(data, options);
+  }
+</script>
 {% endblock %}

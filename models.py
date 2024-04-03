@@ -12,6 +12,21 @@ def connect_db(app):
     app.app_context().push()
 
 
+class Image(db.Model):
+    __tablename__ = 'profile_images'
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    image = db.Column(db.Text,
+                      nullable=False)
+    show_icon = is_private = db.Column(db.Boolean, 
+                           nullable=False, 
+                           default=True)
+
+    groups = db.relationship('Group', backref='image')
+
+
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -112,6 +127,8 @@ class Group(db.Model):
     is_private = db.Column(db.Boolean, 
                            nullable=False, 
                            default=False)
+    image_id = db.Column(db.Integer,
+                        db.ForeignKey('profile_images.id', ondelete='SET DEFAULT 1'))
     
     # user_id = db.Column(db.Integer,
     #                     db.ForeignKey('users.id', ondelete='CASCADE'),
@@ -287,7 +304,7 @@ class GroupUser(db.Model):
 
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
 
-    groupuserfilms = db.relationship('GroupUserFilm', backref='group_user')
+    groupuserfilms = db.relationship('GroupUserFilm', backref='group_user', cascade='all, delete-orphan')
     
     films = db.relationship('Film', secondary='group_users_films', backref='groups_users')
 

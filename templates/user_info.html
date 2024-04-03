@@ -9,13 +9,13 @@
     <div class="row justify-content-end">
       <div class="col-9">
         <ul class="user-stats nav nav-pills">
-          <!-- <li class="stat">
-            <p class="small">Messages</p>
-            <h4>
-              <a href="/users/{{ user.id }}">{{ user.messages | length }}</a>
-            </h4>
-          </li>
           <li class="stat">
+            <p class="ml-3 text-dark user-full-name">{{user.full_name}}</p>
+            <!-- <h4>
+              <a href="/users/{{ user.id }}">{{ user.messages | length }}</a>
+            </h4> -->
+          </li>
+          <!-- <li class="stat">
             <p class="small">Following</p>
             <h4>
               <a href="/users/{{ user.id }}/following">{{ user.following | length }}</a>
@@ -55,7 +55,7 @@
 
 <div class="row">
   <div class="col-sm-3">
-    <h4 id="sidebar-username">@{{ user.username }}</h4>
+    <h4 id="sidebar-username">{{ user.username }}</h4>
     <!-- <p>{{user.bio}}</p>
     <p class="user-location"><span class="fa fa-map-marker"></span>{{user.location}}</p> -->
     <!-- <img src="https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg" alt="an image again"> -->

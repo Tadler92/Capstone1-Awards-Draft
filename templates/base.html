@@ -94,7 +94,11 @@
 
 <script src="https://unpkg.com/jquery"></script>
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="/static/app.js"></script>
+
+{% block javascript %}
+{% endblock %}
+<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load("current", {packages: ['corechart']});
   google.charts.setOnLoadCallback(drawChart);
@@ -104,7 +108,7 @@
       ['Trevor', 100, 'blue', 'Trevor'],
       ['Kaylyn', 50, 'green', 'Kaylyn'],
       ['Travis', 80, 'red', 'Travis'],
-      ['Kellie', 120, 'purpls', 'Kellie']
+      ['Kellie', 120, 'purple', 'Kellie']
     ]);
 
     const options = {
@@ -115,7 +119,7 @@
     google.visualization.ColumnChart(document.getElementById('graph'));
     chart.draw(data, options);
   }
-</script>
-<script src="/static/app.js"></script>
+</script> -->
+
 </body>
 </html>

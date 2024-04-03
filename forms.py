@@ -24,7 +24,9 @@ class GroupForm(FlaskForm):
     """Form for a user to create a group"""
 
     group_name = StringField('Group Name', validators=[InputRequired(), Length(max=20)])
+    image_id = SelectField('Group Image', coerce=int)
     password = PasswordField('(Optional) Password', validators=[Optional(), Length(min=6)])
+    
 
 
 class PrivateGroupForm(FlaskForm):
@@ -54,3 +56,4 @@ class EditGroupForm(FlaskForm):
     """Form for admin user to edit their group"""
 
     group_name = StringField('Group Name', validators=[DataRequired(), Length(max=20)])
+    image_id = SelectField('Group Image', coerce=int)

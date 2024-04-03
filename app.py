@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, redirect, flash, session, jso
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, PendingRollbackError
 
-from models import db, connect_db, text, User, Group, Film, AwardShow, Category, GroupUser, GroupUserFilm, Year, ShowYear, CategoryShowPoint, FilmPoint
+from models import db, connect_db, text, User, Group, Film, AwardShow, Category, GroupUser, GroupUserFilm, Year, ShowYear, CategoryShowPoint, FilmPoint, Image
 from forms import AddUserForm, LoginForm, GroupForm, PrivateGroupForm, DraftFilmInGroupForm, EditProfileForm, EditGroupForm
 from secret import api_key, CURR_USER_KEY
 from funcs import login_session, logout_session, award_show_category_list, film_in_group_lst, merge_choices
@@ -228,15 +228,23 @@ def create_new_group():
 
     form = GroupForm()
 
+    choices = db.session.query(Image.id, Image.image).all()
+    
+    form.image_id.choices = merge_choices(choices)
+
     if form.validate_on_submit():
         group_name = form.group_name.data,
         password = form.password.data
+        image_id = form.image_id.data
+        if image_id == 0:
+            image_id += 1
 
         if password:
             try:
                 group = Group.make_private(
                     group_name=group_name,
-                    password=password
+                    password=password,
+                    image_id=image_id
                 )
                 # group.users.append(g.user)
                 groupuser = GroupUser(group_id=group.id,
@@ -254,7 +262,7 @@ def create_new_group():
 
         else:
             try:
-                group = Group(group_name=group_name, password=None)
+                group = Group(group_name=group_name, password=None, image_id=image_id)
                 # group.users.append(g.user)
                 groupuser = GroupUser(group_id=group.id,
                                       user_id=g.user.id,
@@ -376,9 +384,14 @@ def edit_group(group_id):
     group = Group.query.get_or_404(group_id)
     form = EditGroupForm(obj=group)
 
+    choices = db.session.query(Image.id, Image.image).all()
+    
+    form.image_id.choices = merge_choices(choices)
+
     if form.validate_on_submit():
         try:
             group.group_name = form.group_name.data
+            group.image_id = form.image_id.data
 
             db.session.commit()
 
@@ -406,8 +419,8 @@ def delete_group(group_id):
     db.session.delete(group)
     db.session.commit()
 
-    flash('Successfully deleted profile', 'info')
-    return redirect('/')
+    flash('Successfully deleted group', 'info')
+    return redirect('/groups')
 
 
 

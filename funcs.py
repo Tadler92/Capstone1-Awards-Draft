@@ -55,7 +55,7 @@ def merge_choices(choices):
     """Function that turns information gotten from a db into a list of tuples with those choices"""
 
     ids = [0]
-    titles = ['-- Choose a film --']
+    titles = ['-- Choose an option --']
     for choice in choices:
         ids.append(choice[0])
         titles.append(choice[1])

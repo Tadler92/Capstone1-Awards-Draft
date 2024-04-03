@@ -11,6 +11,13 @@ CREATE TABLE years
     curr_year INTEGER NOT NULL
 );
 
+CREATE TABLE profile_images
+(
+    id SERIAL PRIMARY KEY,
+    image TEXT,
+    show_icon BOOLEAN DEFAULT TRUE
+);
+
 CREATE TABLE users
 (
     id SERIAL PRIMARY KEY,
@@ -28,7 +35,8 @@ CREATE TABLE groups
     id SERIAL PRIMARY KEY,
     group_name VARCHAR(20) NOT NULL UNIQUE,
     password TEXT DEFAULT NULL,
-    is_private BOOLEAN DEFAULT FALSE
+    is_private BOOLEAN DEFAULT FALSE,
+    image_id INTEGER DEFAULT 1 REFERENCES profile_images ON DELETE SET DEFAULT
 );
 
 CREATE TABLE films
@@ -396,6 +404,16 @@ VALUES
 ('The Next 365 Days', 96);
 
 
+-- a select amount of images that users/groups can choose from
+INSERT INTO profile_images (image, show_icon)
+VALUES
+-- ('https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg', FALSE),
+-- ('fa-person-through-window', TRUE), ('fa-user-ninja', TRUE),
+-- ('fa-user-secret', TRUE), ('fa-tv', TRUE),
+('fa-user-group', TRUE), ('fa-people-group', TRUE), ('fa-film', TRUE),
+('fa-users-between-lines', TRUE);
+
+
 
 
 -- a starting selection of test users
@@ -409,10 +427,10 @@ VALUES
 
 
 -- a starting selection of test groups
-INSERT INTO groups (group_name)
+INSERT INTO groups (group_name, image_id)
 VALUES
-('The OGsss'),
-('GURLLLIEESSS');
+('The OGsss', 2),
+('GURLLLIEESSS', 4);
 
 
 
