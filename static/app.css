@@ -83,16 +83,28 @@ nav {
   display: block;
   margin-right: 20px;
 }
+
+#user-groups p {
+  font-size: 25px;
+}
+
 #user-groups ul {
   list-style-type: none;
 }
 
 #user-groups ul li a {
-  color: white;
+  color: gold;
+  font-size: 1.1em;
   text-decoration: none;
 }
+
 #user-groups ul li a:hover {
   opacity: 0.7;
+}
+
+#user-groups #user-list li a {
+  color: white;
+  font-size: 1em;
 }
 
 .user-group-name {
@@ -258,6 +270,21 @@ div.show-icon img {
 .disable-click {
   pointer-events: none;
   visibility: hidden;
+}
+
+#list-of-groups {
+  list-style-type: none;
+}
+
+#list-of-groups li a {
+  color: gold;
+  text-decoration: none;
+  font-size: 1.2em;
+  transition: 0.5s;
+}
+
+#list-of-groups li a:hover {
+  opacity: 0.6;
 }
 
 /* i.fa-user-group {

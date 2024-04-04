@@ -7,7 +7,7 @@
 <h1>Join or Create a Group!</h1>
 <p>To join a group, just click the group name, click "Join Group", and enter the group password (if there is one).</p>
 
-<ul>
+<ul id="list-of-groups">
 {% for group in groups %}
   <li>
      <a href="{{ url_for('show_group_info', group_id=group.id) }}">{{ group.group_name }}</a>

@@ -35,12 +35,9 @@
                   <button class="btn btn-primary leave-group" data-group_id="{{group.id}}" data-user_id="{{g.user.id}}">Leave Group</button>
                 </form>
               {% else %}
-                <form method="POST" action="/groups/17">
+                <form method="POST" action="{{url_for('join_group', group_id=group.id) }}">
                   <button class="btn btn-outline-primary join-group"data-group_id="{{group.id}}" data-user_id="{{g.user.id}}">Join Group</button>
                 </form>
-                <!-- <form method="POST" action="{{url_for('join_group', group_id=group.id) }}">
-                  <button class="btn btn-outline-primary join-group"data-group_id="{{group.id}}" data-user_id="{{g.user.id}}">Join Group</button>
-                </form> -->
               {% endif %}
 
             {% endif %}
