@@ -471,13 +471,17 @@ def draft_film(groupuser_id):
     form.film.choices = merge_choices(choices)
 
     if form.validate_on_submit():
-        groupuser_film = GroupUserFilm(group_user_id=groupuser_id,
-                                       film_id=form.film.data)
-        
-        db.session.add(groupuser_film)
-        db.session.commit()
+        if form.film.data == 0:
+            flash('Invalid Selection! Please choose film from below.', 'danger')
+            return render_template('draft_film.html', form=form, group=group, gu=gu)
+        else:
+            groupuser_film = GroupUserFilm(group_user_id=groupuser_id,
+                                        film_id=form.film.data)
+            
+            db.session.add(groupuser_film)
+            db.session.commit()
 
-        return redirect(f'/groups/{group.id}')
+            return redirect(f'/groups/{group.id}')
     
     return render_template('draft_film.html', form=form, group=group, gu=gu)
 

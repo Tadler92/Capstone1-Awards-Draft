@@ -255,6 +255,11 @@ div.show-icon img {
   font-size: 35px;
 }
 
+.disable-click {
+  pointer-events: none;
+  visibility: hidden;
+}
+
 /* i.fa-user-group {
   font-size: 70px;
   border-radius: 100px;

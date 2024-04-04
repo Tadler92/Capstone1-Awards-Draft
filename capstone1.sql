@@ -201,7 +201,7 @@ VALUES
 ('Saltburn', 97),
 ('All of Us Strangers', 97),
 ('No One Will Save You', 97),
-('The Hunger Games: The Ballad of Songbirds and Snakes', 97),
+('The Hunger Games: The Ballad of Songbirds & Snakes', 97),
 ('The Exorcist: Believer', 97),
 ('Rebel Moon', 97),
 ('The Super Mario Bros. Movie', 97),
@@ -410,9 +410,8 @@ VALUES
 -- ('https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg', FALSE),
 -- ('fa-person-through-window', TRUE), ('fa-user-ninja', TRUE),
 -- ('fa-user-secret', TRUE), ('fa-tv', TRUE),
-('fa-user-group', TRUE), ('fa-people-group', TRUE), ('fa-film', TRUE),
-('fa-users-between-lines', TRUE);
-
+('fa-user-group', TRUE), ('fa-people-group', TRUE),
+('fa-users-rays', TRUE), ('fa-users-between-lines', TRUE);
 
 
 

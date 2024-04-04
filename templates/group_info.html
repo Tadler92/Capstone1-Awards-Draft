@@ -20,22 +20,24 @@
           <div class="ml-auto">
             
             {% if group.usergroups[0].is_admin and g.user.id == group.usergroups[0].user_id %}
-            <a href="/groups/{{group.id}}/edit-group" class="btn btn-outline-secondary">Edit Group</a>
-            <form method="POST" action="/groups/{{group.id}}/delete" class="form-inline">
-              <button class="btn btn-outline-danger ml-2">Delete Group</button>
-            </form>
+
+              <a href="/groups/{{group.id}}/edit-group" class="btn btn-outline-secondary">Edit Group</a>
+              <form method="POST" action="/groups/{{group.id}}/delete" class="form-inline">
+                <button class="btn btn-outline-danger ml-2">Delete Group</button>
+              </form>
             {% else %}
 
-            {% if group.has_user(g.user) %}
-            <!-- <a href="/{{group.id}}/films/draft" class="btn btn-outline-success">Draft Film</a> -->
-            <form method="POST" action="/groups/{{ group.id }}/leave-group">
-              <button class="btn btn-primary">Leave Group</button>
-            </form>
-            {% else %}
-            <form method="POST" action="/groups/{{ group.id }}/join-group">
-              <button class="btn btn-outline-primary">Join Group</button>
-            </form>
-            {% endif %}
+              {% if group.has_user(g.user) %}
+
+                <form method="POST" action="/groups/{{ group.id }}/leave-group">
+                  <button class="btn btn-primary">Leave Group</button>
+                </form>
+              {% else %}
+                <form method="POST" action="/groups/{{ group.id }}/join-group">
+                  <button class="btn btn-outline-primary join-group">Join Group</button>
+                </form>
+              {% endif %}
+
             {% endif %}
           </div>
         </ul>
@@ -47,11 +49,6 @@
 <div class="row">
   <div class="col-sm-3">
     <h4 id="sidebar-username">{{ group.group_name }}</h4>
-    
-    <!-- <img src="https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg" alt="an image again"> -->
-    
-    <!-- <a href="https://imgbb.com/"><img src="https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg" alt="Empty-Profile-Pic" border="0"></a><br /><a target='_blank' href='https://dedupelist.com/'>exclude duplicates</a><br />
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/1200px-Cat_August_2010-4.jpg" alt="an image again"> -->
 
     <div id="graph">
     </div>
@@ -61,17 +58,22 @@
     <p>Members:</p>
     <ul>
       {% for user in group.users %}
+
         <li>
           <a href="/users/{{ user.id }}" class="timeline-img-link">
             <img src="{{user.img_url}}" alt="Profile Pic for {{user.username}}" class="timeline-image">
           </a>
           <a href="/users/{{ user.id }}" class="user-group-name">{{ user.username }}</a>
           {% if user.id == g.user.id %}
-          {% for ug in group.usergroups %}
-          {% if ug.group.id == group.id and ug.user.id == g.user.id %}
-          <a href="/groupusers/{{ug.id}}/films/draft" class="btn btn-outline-success btn-sm">Draft Film</a>
-          {% endif %}
-          {% endfor %}
+
+            {% for ug in group.usergroups %}
+
+              {% if ug.group.id == group.id and ug.user.id == g.user.id %}
+              <a href="/groupusers/{{ug.id}}/films/draft" class="btn btn-outline-success btn-sm draft-film">Draft Film</a>
+              {% endif %}
+
+            {% endfor %}
+
           {% endif %}
 
           <table id="{{user.username}}-table">
@@ -81,99 +83,51 @@
             </thead>
             <tbody>
               {% for ug in group.usergroups %}
-              {% if ug.user.id == user.id %}
-              {% for film in ug.films %}
-              <tr id="{{film.id}}-row">
-                <td class="film-column">
-                  <a href="/films/{{film.id}}" class="user-film-name">{{film.title}}</a>
-                </td>
-                <td class="point-column">{{film.total_points}}</td>
-                {% if ug.user.id == g.user.id %}
-                <td class="delete-column">
-                  <form method="POST" action="/groupusers/{{ug.id}}/films/{{film.id}}/undraft" class="del-film-form">
-                    <button class="btn btn-outline-danger remove-film-button">
-                      <i class="far fa-trash-can text-danger"></i>
-                    </button>
-                  </form>
-                </td>
-                
+
+                {% if ug.user.id == user.id %}
+
+                  {% for film in ug.films %}
+
+                    <tr id="{{film.id}}-row">
+                      <td class="film-column">
+                        <a href="/films/{{film.id}}" class="user-film-name">{{film.title}}</a>
+                      </td>
+                      <td class="point-column">{{film.total_points}}</td>
+
+                      {% if ug.user.id == g.user.id %}
+
+                        <td class="delete-column">
+                          <form method="POST" action="/groupusers/{{ug.id}}/films/{{film.id}}/undraft" class="del-film-form">
+                            <button class="btn btn-outline-danger remove-film-button">
+                              <i class="far fa-trash-can text-danger"></i>
+                            </button>
+                          </form>
+                        </td>
+                      
+                      {% endif %}
+                    </tr>
+
+                  {% endfor %}
+
                 {% endif %}
-              </tr>
-              {% endfor %}
-              {% endif %}
+
               {% endfor %}
             </tbody>
           </table>
 
-          <!-- <ul>
-            {% for ug in group.usergroups %} -->
-            <!-- {% if ug.group.id == group.id and ug.user.id == g.user.id %}
-            <a href="/{{ug.id}}/films/draft" class="btn btn-outline-success">Draft Film</a>
-            {% endif %} -->
-            <!-- {% if ug.user.id == user.id %}
-            {% for film in ug.films %}
-            <li>
-              <a href="/films/{{film.id}}" class="user-film-name">{{film.title}}</a> -> {{film.total_points}}
-              {% if ug.user.id == g.user.id %}
-              <form method="POST" action="/groupusers/{{ug.id}}/films/{{film.id}}/undraft" class="del-film-form">
-                <button class="btn btn-outline-danger remove-film-button">
-                  <i class="far fa-trash-can text-danger"></i>
-                </button>
-              </form> -->
-              <!-- <i class="far fa-trash-can text-danger"></i> -->
-              <!-- {% endif %}
-            </li>
-            {% endfor %}
-            {% endif %}
-            {% endfor %} -->
-            <!-- {% for ug in user.usergroups %}
-            {% if ug.id == group.id %}
-            {% for film in ug.groupuserfilms %}
-            <li>
-              {{film.chosen_film.title}}
-            </li>
-            {% endfor %}
-            {% endif %}
-            {% endfor %} -->
-          <!-- </ul> -->
         </li>
       {% endfor %}
     </ul>
   </div>
   
-  
-  <!-- <div id="user-group-btns">
-    <a class="btn btn-primary" href="/">Join group</a>
-    <a class="btn btn-primary" href="/groups/add">Leave group</a>
-  </div> -->
-  
 
 </div>
 
-<!-- <script>
-  google.charts.load("current", {packages: ['corechart']});
-  google.charts.setOnLoadCallback(drawChart);
-  function drawChart() {
-    const data = google.visualization.arrayToDataTable([
-      ['Name', 'Points', {role: 'style'}, {role: 'annotation'}],
-      ['Trevor', 100, 'blue', 'Trevor'],
-      ['Kaylyn', 50, 'green', 'Kaylyn'],
-      ['Travis', 80, 'red', 'Travis'],
-      ['Kellie', 120, 'purpls', 'Kellie']
-    ]);
-
-    const options = {
-      title: 'Points Leaders'
-    };
-
-    const chart = new 
-    google.visualization.ColumnChart(document.getElementById('graph'));
-    chart.draw(data, options);
-  }
-</script> -->
 {% endblock %}
 
 {% block javascript %}
+<!-- This is to present the graph on the page -->
+
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load("current", {packages: ['corechart']});
@@ -181,10 +135,10 @@
 
   let tableObj = {};
   let colors = [
-    'red',
     'blue',
     'orange',
     'green',
+    'red',
     'purple',
     'yellow',
     'gray',
@@ -192,57 +146,33 @@
     'black',
     'silver'
   ]
-  // let random = Math.floor(Math.random() * colors.length);
+  
+  let count = 0;
 
   let $tables = $('table');
-  console.log($tables);
-  console.log($tables.length);
   for (let table of $tables) {
-    console.log(table.id)
     let total = 0;
-    let random = Math.floor(Math.random() * colors.length);
 
     for (let row of table.childNodes[3].childNodes) {
       if (row.innerText !== undefined) {
         if (String(parseInt(row.innerText.slice(-3))) === 'NaN'){
-          console.log(parseInt(row.innerText.slice(-2)))
           total += parseInt(row.innerText.slice(-2))
-          console.log(row.innerText)
-          // console.log('first if')
         }
         else if (String(parseInt(row.innerText.slice(-4))) === 'NaN'){
-          console.log(parseInt(row.innerText.slice(-3)))
           total += parseInt(row.innerText.slice(-3))
-          console.log(row.innerText)
-          // console.log('second if')
         }
-        // console.log(typeof(row.innerText))
-        // console.log(row.innerText)
-        // console.log(row.innerText.slice(-3))
         else {
-          console.log(row.innerText)
-          console.log(row.innerText.slice(-4))
-          console.log(parseInt(row.innerText.slice(-3)))
           total += parseInt(row.innerText.slice(-4))
         }
       }
     }
-    console.log(total)
-    console.log(table.id.split('-').shift())
-    tableObj[`${table.id.split('-').shift()}`] = [`${table.id.split('-').shift()}`, total, colors[random], `${table.id.split('-').shift()}`];
+    tableObj[`${table.id.split('-').shift()}`] = [`${table.id.split('-').shift()}`, total, colors[count], `${table.id.split('-').shift()}`];
+    count++;
   }
-  console.log(tableObj)
   let chartVals = Object.values(tableObj);
   chartVals.unshift(['Name', 'Points', {role: 'style'}, {role: 'annotation'}])
 
   function drawChart() {
-    // const data = google.visualization.arrayToDataTable([
-    //   ['Name', 'Points', {role: 'style'}, {role: 'annotation'}],
-    //   ['Trevor', 100, 'blue', 'Trevor'],
-    //   ['Kaylyn', 50, 'green', 'Kaylyn'],
-    //   ['Travis', 80, 'red', 'Travis'],
-    //   ['Kellie', 120, 'purple', 'Kellie']
-    // ]);
     const data = google.visualization.arrayToDataTable(chartVals);
 
     const options = {
