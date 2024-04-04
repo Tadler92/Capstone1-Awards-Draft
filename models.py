@@ -48,7 +48,7 @@ class User(db.Model):
                           nullable=False,
                           default='https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg')
     
-    usergroups = db.relationship('GroupUser', backref='user', cascade='all, delete-orphan')
+    usergroups = db.relationship('GroupUser', back_populates='user', cascade='all, delete-orphan')
 
     # groups = db.relationship('Group', secondary='groups_users', backref='users', cascade='all, delete-orphan', single_parent=True)
     
@@ -145,7 +145,7 @@ class Group(db.Model):
     #                     nullable=False
     #                     )
     
-    usergroups = db.relationship('GroupUser', backref='group', cascade='all, delete-orphan')
+    usergroups = db.relationship('GroupUser', back_populates='group', cascade='all, delete-orphan')
     
     users = db.relationship('User', secondary='groups_users', backref='groups')
 
@@ -226,9 +226,9 @@ class Film(db.Model):
     
     # filmnoms = db.relationship('FilmNom', backref='nominated_film')
     # filmwins = db.relationship('FilmWin', backref='winning_film')
-    filmpoints = db.relationship('FilmPoint', backref='points_for_film')
+    filmpoints = db.relationship('FilmPoint', back_populates='points_for_film')
 
-    groupuserfilms = db.relationship('GroupUserFilm', backref='chosen_film')
+    groupuserfilms = db.relationship('GroupUserFilm', back_populates='chosen_film')
 
     def __repr__(self):
         """Will represent the returned object as <User id=<id> title=<title> year=<year>>"""
@@ -270,7 +270,7 @@ class AwardShow(db.Model):
     show_name = db.Column(db.Text,
                       nullable=False)
     
-    showyears = db.relationship('ShowYear', backref='award_show')
+    showyears = db.relationship('ShowYear', back_populates='award_show')
     
     # categories = db.relationship('Category', secondary='categories_shows', backref='award_shows')
 
@@ -289,9 +289,9 @@ class ShowYear(db.Model):
 
     show_date = db.Column(db.Date, nullable=False)
 
-    categories = db.relationship('Category', secondary='categories_show_points', backref='shows_years')
+    categories = db.relationship('Category', secondary='categories_show_points', back_populates='shows_years')
 
-    showcategories = db.relationship('CategoryShowPoint', backref='showyear')
+    showcategories = db.relationship('CategoryShowPoint', back_populates='showyear')
     
 
 class Category(db.Model):
@@ -303,7 +303,7 @@ class Category(db.Model):
     category_name = db.Column(db.Text,
                       nullable=False)
     
-    showcategories = db.relationship('CategoryShowPoint', backref='category')
+    showcategories = db.relationship('CategoryShowPoint', back_populates='category')
     # showcategories = db.relationship('CategoryShow', backref='category')
 
     
@@ -323,9 +323,9 @@ class GroupUser(db.Model):
 
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
 
-    groupuserfilms = db.relationship('GroupUserFilm', backref='group_user', cascade='all, delete-orphan')
+    groupuserfilms = db.relationship('GroupUserFilm', back_populates='group_user', cascade='all, delete-orphan')
     
-    films = db.relationship('Film', secondary='group_users_films', backref='groups_users')
+    films = db.relationship('Film', secondary='group_users_films', back_populates='groups_users')
 
 
 # class CategoryShow(db.Model):
@@ -358,9 +358,9 @@ class CategoryShowPoint(db.Model):
 
     points = db.Column(db.Integer, nullable=False)
 
-    filmspoints = db.relationship('FilmPoint', backref='category_show_point')
+    filmspoints = db.relationship('FilmPoint', back_populates='category_show_point')
 
-    films = db.relationship('Film', secondary='films_points', backref='category_show_points')
+    films = db.relationship('Film', secondary='films_points', back_populates='category_show_points')
 
     # nompoints = db.relationship('NomPoint', backref='nomed_category_show')
     # winpoints = db.relationship('WinPoint', backref='won_category_show')
