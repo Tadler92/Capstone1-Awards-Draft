@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% block title %}Groups Page{% endblock %}
+
 {% block content %}
 
 <h1>Join or Create a Group!</h1>
@@ -8,11 +10,11 @@
 <ul>
 {% for group in groups %}
   <li>
-     <a href="/groups/{{ group.id }}">{{ group.group_name }}</a>
+     <a href="{{ url_for('show_group_info', group_id=group.id) }}">{{ group.group_name }}</a>
   </li>
 {% endfor %}
 </ul>
 
-<p><a class="btn btn-primary" href="/groups/add">Add a group</a></p>
+<p><a class="btn btn-primary" href="{{url_for('create_new_group')}}">Add a group</a></p>
 
 {% endblock %}

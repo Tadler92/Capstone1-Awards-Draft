@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
+{% block title %}Movie Awards Draft{% endblock %}
+
 {% block content %}
 
 <h1>Welcome to the Movie Awards Draft Site!!</h1>
 <p>
   To begin, please either
-  <a href="/signup" class="btn btn-primary btn-sm">signup</a> 
+  <a href="{{url_for('signup')}}" class="btn btn-primary btn-sm">signup</a> 
   or 
-  <a href="/login" class="btn btn-primary btn-sm">login</a>
+  <a href="{{url_for('login')}}" class="btn btn-primary btn-sm">login</a>
 </p>
 
 {% endblock %}

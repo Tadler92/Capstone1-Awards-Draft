@@ -421,7 +421,7 @@ VALUES
 ('Trevor', 'Duhon', 'Tadler', 'sithlord789@yahoo.com', 'hello!!!:)'),
 ('Kyle', 'Duhon', 'RaidenStorm', 'lightninglover@yahoo.com', 'KA-chow!!'),
 ('Kellie', 'Viola', 'KVoila', 'KellsBells@yahoo.com', 'PurpsNurps1'),
-('Haley', 'Anslem', 'handslamy', 'handslamy@yahoo.com', 'LGBTcutie');
+('Haley', 'Anslem', 'handslamieee', 'handslamy@yahoo.com', 'LGBTcutie');
 
 
 

@@ -57,6 +57,16 @@ class User(db.Model):
 
         u = self
         return f"<User id={u.id} first_name={u.first_name} last_name={u.last_name}"
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'username': self.username,
+            'email': self.email,
+            'img_url': self.img_url,
+        }
        
     def _get_full_name(self):
         """Returns the user's name as a full name (first and last name) in one string"""
@@ -145,6 +155,15 @@ class Group(db.Model):
         found_user_list = [user for user in self.users if user == other_user]
 
         return len(found_user_list) == 1
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'group_name': self.group_name,
+            'is_private': self.is_private,
+            'image_id': self.image_id,
+            'users': [user.serialize() for user in self.users]
+        }
     
     @classmethod
     def make_private(cls, group_name, password):
