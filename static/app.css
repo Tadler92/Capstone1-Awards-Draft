@@ -16,17 +16,17 @@ nav {
 
 @media (max-width: 375px) {
   .film-title {
-    margin-left: 15%;
+    margin-left: 10%;
   }
   .film-rating {
-    margin-left: 15%;
+    margin-left: 10%;
   }
   .film-poster {
-    margin-left: 5%;
+    margin-left: 0;
   }
 }
 
-@media (max-width: 575px){
+@media (min-width: 375px){
   #user-groups {
     margin-left: 50px;
     margin-top: 30px;
