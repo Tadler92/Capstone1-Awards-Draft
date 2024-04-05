@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:5000/groups/2';
+const baseURL = 'http://localhost:5000';
 
 let $winsCell = $('.wins-cell');
 
@@ -15,6 +15,7 @@ let $leaveGroupBtn = $('.leave-group');
 let $draftFilmBtn = $('.draft-film');
 let $removeFilmBtn = $('.remove-film-button');
 let $filmColumns = $('.film-column');
+let $logoutBtn = $('.signout');
 
 if ($groupTables.length >= 8){
   // $joinGroupBtn.disabled = true;
@@ -31,6 +32,11 @@ for (let table of $groupTables) {
     $draftFilmBtn.removeClass('disable-click');
   }
 }
+
+// $logoutBtn.on('click', async function logout(e) {
+//   e.preventDefault()
+//   await axios.post(`${baseURL}/logout`);
+// });
 
 // $joinGroupBtn.on('click', async function (e) {
 //   e.preventDefault();

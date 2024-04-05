@@ -120,10 +120,11 @@ def login():
 def logout():
     """Logs out a user."""
 
-    logout_session()
+    # logout_session()
 
-    flash('You have successfully logged out!', 'success')
-    return redirect(url_for('login'))
+    # flash('You have successfully logged out!', 'success')
+    return render_template('logout_form.html')
+    # return redirect(url_for('logout_user'))
 
 
 
@@ -185,6 +186,20 @@ def edit_profile():
             return render_template('edit_user_info.html', form=form, user_id=user.id)
     
     return render_template('edit_user_info.html', form=form, user_id=user.id)
+
+
+@app.route('/users/logout', methods=['POST'])
+def logout_user():
+    """Logs a user out; making the logout a post route instead of a normal get route based on what some have said is a better way of doing things..."""
+
+    if not g.user:
+        flash('Unauthorized Action!', 'danger')
+        return redirect(url_for('homepage'))
+
+    logout_session()
+
+    flash('You have successfully logged out!', 'success')
+    return redirect(url_for('login'))
 
 
 @app.route('/users/delete', methods=['POST'])

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, FileField
+from wtforms import StringField, PasswordField, SelectField, FileField, SubmitField
 from wtforms.validators import InputRequired, DataRequired, Email, Length, Optional
 
 class AddUserForm(FlaskForm):
@@ -57,3 +57,9 @@ class EditGroupForm(FlaskForm):
 
     group_name = StringField('Group Name', validators=[DataRequired(), Length(max=20)])
     image_id = SelectField('Group Image', coerce=int)
+
+
+class LogoutForm(FlaskForm):
+    """Form for user to logout"""
+
+    button = SubmitField('Logout')
