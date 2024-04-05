@@ -76,13 +76,13 @@ nav {
   } */
 
   .film-title {
-    margin-left: 30%;
+    margin-left: 15%;
   }
   .film-rating {
-    margin-left: 30%;
+    margin-left: 15%;
   }
   .film-poster {
-    margin-left: 15%;
+    margin-left: 5%;
   }
   
   .awards-points-table .cat-column {
@@ -135,7 +135,7 @@ nav {
     padding: 80px 40px 20px 50px;
   }
 
-  /* .film-title {
+  .film-title {
     margin-left: 35%;
   }
   .film-rating {
@@ -143,7 +143,7 @@ nav {
   }
   .film-poster {
     margin-left: 20%;
-  } */
+  }
 
   #points-breakdown {
     border: 1px solid black;
@@ -196,7 +196,7 @@ nav {
     margin-left: 80px;
   } */
 
-  .film-title {
+  /* .film-title {
     margin-left: 35%;
   }
   .film-rating {
@@ -204,7 +204,7 @@ nav {
   }
   .film-poster {
     margin-left: 20%;
-  }
+  } */
 }
 
 @media (min-width: 770px) {
