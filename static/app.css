@@ -14,18 +14,6 @@ nav {
   border-bottom: solid gold 0;
 }
 
-@media (max-width: 375px) {
-  .film-title {
-    margin-left: 10%;
-  }
-  .film-rating {
-    margin-left: 10%;
-  }
-  .film-poster {
-    margin-left: 0;
-  }
-}
-
 @media (max-width: 575px){
   #user-groups {
     margin-left: 50px;
@@ -110,6 +98,14 @@ nav {
   }
   #points-breakdown .categories {
     width: 150px;
+  }
+}
+
+@media (max-width: 450px) {
+  #user-group-btns {
+    position: absolute;
+    right: 15px;
+    top: 45%;
   }
 }
 
