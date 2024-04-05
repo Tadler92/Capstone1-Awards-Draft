@@ -13,7 +13,7 @@ from funcs import login_session, logout_session, award_show_category_list, film_
 # from flask_uploads import configure_uploads, IMAGES, UploadSet
 
 import requests
-# import json
+import json
 # from funcs import add_tags_to_db, add_tags_to_lst, tag_lst, lst_to_str
 UPLOAD_FOLDER = '/static/photos'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -52,11 +52,13 @@ def add_user_to_g():
 
     if CURR_USER_KEY in session:
         g.user = User.query.get(session[CURR_USER_KEY])
+        print('*************Request', request.endpoint)
 
     # elif request.endpoint != 'login':
-    elif request.endpoint not in ['login', 'signup', 'homepage']:
-        flash('Must be logged in first!', 'danger')
-        return redirect(url_for('login'))
+    # elif request.endpoint not in ['login', 'signup', 'homepage', 'how-to-play']:
+    #     print('*************Request', request.endpoint)
+    #     flash('Must be logged in first!', 'danger')
+    #     return redirect(url_for('login'))
 
     db.session.rollback()
 
@@ -146,6 +148,10 @@ def show_user_info(user_id):
     4) groups
     
     """
+    if CURR_USER_KEY not in session:
+        flash('Must be logged in first!', 'danger')
+        return redirect(url_for('login'))
+
 
     user = User.query.get_or_404(user_id)
 
@@ -548,6 +554,9 @@ def homepage():
 @app.route('/how-to-play')
 def how_to_play():
     """Shows page to explain how to use application after a user signs up"""
+    if CURR_USER_KEY not in session:
+        flash('Must be logged in first!', 'danger')
+        return redirect(url_for('login'))
 
     return render_template('how_to.html')
 
