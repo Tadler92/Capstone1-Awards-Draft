@@ -4,7 +4,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError, PendingRollbackError
 from flask_cors import CORS
 
-from models import db, connect_db, text, User, Group, Film, AwardShow, Category, GroupUser, GroupUserFilm, Year, ShowYear, CategoryShowPoint, FilmPoint, Image
+from models import db, connect_db, text, User, Group, Film, AwardShow, Category, GroupUser, GroupUserFilm, Year, ShowYear, CategoryShowPoint, Image
 from forms import AddUserForm, LoginForm, GroupForm, PrivateGroupForm, DraftFilmInGroupForm, EditProfileForm, EditGroupForm
 from secret import api_key, CURR_USER_KEY
 from funcs import login_session, logout_session, award_show_category_list, film_in_group_lst, merge_choices

@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from sqlalchemy import text
-from sqlalchemy.orm import backref
+from sqlalchemy.orm import backref, relationship
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
@@ -20,7 +20,7 @@ class Image(db.Model):
                    autoincrement=True)
     image = db.Column(db.Text,
                       nullable=False)
-    show_icon = is_private = db.Column(db.Boolean, 
+    show_icon = db.Column(db.Boolean, 
                            nullable=False, 
                            default=True)
 
@@ -48,7 +48,11 @@ class User(db.Model):
                           nullable=False,
                           default='https://i.ibb.co/FxkBTLm/Empty-Profile-Pic.jpg')
     
-    usergroups = db.relationship('GroupUser', back_populates='user', cascade='all, delete-orphan')
+    usergroups = relationship('GroupUser', back_populates='user', overlaps="usergroups", cascade='all, delete-orphan')
+    # usergroups = db.relationship('GroupUser', backref='user', cascade='all, delete-orphan', viewonly=True)
+    groups = relationship('Group', secondary='groups_users', back_populates='users', overlaps="usergroups")
+
+    # groups = db.relationship('User', secondary='groups_users', backref='users')
 
     # groups = db.relationship('Group', secondary='groups_users', backref='users', cascade='all, delete-orphan', single_parent=True)
     
@@ -145,9 +149,9 @@ class Group(db.Model):
     #                     nullable=False
     #                     )
     
-    usergroups = db.relationship('GroupUser', back_populates='group', cascade='all, delete-orphan')
+    usergroups = relationship('GroupUser', back_populates='group', overlaps="usergroups", cascade='all, delete-orphan')
     
-    users = db.relationship('User', secondary='groups_users', backref='groups')
+    users = relationship('User', secondary='groups_users', back_populates='groups', overlaps="usergroups")
 
     def has_user(self, other_user):
         """Checks to see if a user is in this group"""
@@ -210,7 +214,7 @@ class Year(db.Model):
                    autoincrement=True)
     curr_year = db.Column(db.Integer)
 
-    films = db.relationship('Film', backref='year')
+    films = relationship('Film', back_populates='year')
 
 
 class Film(db.Model):
@@ -223,12 +227,18 @@ class Film(db.Model):
                       nullable=False)
     year_id = db.Column(db.Integer,
                         db.ForeignKey('years.id', ondelete='SET NULL'))
+
+    year = relationship('Year', back_populates='films')
     
     # filmnoms = db.relationship('FilmNom', backref='nominated_film')
     # filmwins = db.relationship('FilmWin', backref='winning_film')
-    filmpoints = db.relationship('FilmPoint', back_populates='points_for_film')
+    filmpoints = relationship('FilmPoint', back_populates='points_for_film')
 
-    groupuserfilms = db.relationship('GroupUserFilm', back_populates='chosen_film')
+    groupuserfilms = relationship('GroupUserFilm', back_populates='chosen_film')
+
+    groups_users = relationship('GroupUser', secondary='group_users_films', back_populates='films', overlaps="groupuserfilms")
+
+    category_show_points = relationship('CategoryShowPoint', secondary='films_points', back_populates='films', overlaps="filmpoints")
 
     def __repr__(self):
         """Will represent the returned object as <User id=<id> title=<title> year=<year>>"""
@@ -270,7 +280,7 @@ class AwardShow(db.Model):
     show_name = db.Column(db.Text,
                       nullable=False)
     
-    showyears = db.relationship('ShowYear', back_populates='award_show')
+    showyears = relationship('ShowYear', back_populates='award_show')
     
     # categories = db.relationship('Category', secondary='categories_shows', backref='award_shows')
 
@@ -289,9 +299,11 @@ class ShowYear(db.Model):
 
     show_date = db.Column(db.Date, nullable=False)
 
-    categories = db.relationship('Category', secondary='categories_show_points', back_populates='shows_years')
+    award_show = relationship('AwardShow', back_populates='showyears')
 
-    showcategories = db.relationship('CategoryShowPoint', back_populates='showyear')
+    categories = relationship('Category', secondary='categories_show_points', back_populates='shows_years')
+
+    showcategories = relationship('CategoryShowPoint', back_populates='showyear', overlaps="categories")
     
 
 class Category(db.Model):
@@ -303,8 +315,10 @@ class Category(db.Model):
     category_name = db.Column(db.Text,
                       nullable=False)
     
-    showcategories = db.relationship('CategoryShowPoint', back_populates='category')
+    showcategories = relationship('CategoryShowPoint', back_populates='category', overlaps="categories")
     # showcategories = db.relationship('CategoryShow', backref='category')
+
+    shows_years = relationship('ShowYear', secondary='categories_show_points', back_populates='categories', overlaps="showcategories")
 
     
 
@@ -323,9 +337,12 @@ class GroupUser(db.Model):
 
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
 
-    groupuserfilms = db.relationship('GroupUserFilm', back_populates='group_user', cascade='all, delete-orphan')
+    user = relationship('User', back_populates='usergroups', overlaps="groups,users")
+    group = relationship('Group', back_populates='usergroups', overlaps="groups,users")
+
+    groupuserfilms = relationship('GroupUserFilm', back_populates='group_user', overlaps="groups_users", cascade='all, delete-orphan')
     
-    films = db.relationship('Film', secondary='group_users_films', back_populates='groups_users')
+    films = relationship('Film', secondary='group_users_films', back_populates='groups_users', overlaps="groupuserfilms")
 
 
 # class CategoryShow(db.Model):
@@ -358,9 +375,12 @@ class CategoryShowPoint(db.Model):
 
     points = db.Column(db.Integer, nullable=False)
 
-    filmspoints = db.relationship('FilmPoint', back_populates='category_show_point')
+    filmspoints = relationship('FilmPoint', back_populates='category_show_point', overlaps="category_show_points")
 
-    films = db.relationship('Film', secondary='films_points', back_populates='category_show_points')
+    films = relationship('Film', secondary='films_points', back_populates='category_show_points', overlaps="filmspoints,filmpoints")
+
+    showyear = relationship('ShowYear', back_populates='showcategories', overlaps="categories,shows_years")
+    category = relationship('Category', back_populates='showcategories', overlaps="categories,shows_years")
 
     # nompoints = db.relationship('NomPoint', backref='nomed_category_show')
     # winpoints = db.relationship('WinPoint', backref='won_category_show')
@@ -427,6 +447,10 @@ class FilmPoint(db.Model):
 
     points_id = db.Column(db.Integer, db.ForeignKey('categories_show_points.id', ondelete='CASCADE'), primary_key=True, nullable=False)
 
+    points_for_film = relationship('Film', back_populates='filmpoints', overlaps="category_show_points,films")
+
+    category_show_point = relationship('CategoryShowPoint', back_populates='filmspoints', overlaps="category_show_points,films")
+
     def __repr__(self):
         """Will represent the returned object as <User id=<id> title=<title> year=<year>>"""
 
@@ -456,3 +480,7 @@ class GroupUserFilm(db.Model):
     group_user_id = db.Column(db.Integer, db.ForeignKey('groups_users.id', ondelete='CASCADE'), primary_key=True, nullable=False)
 
     film_id = db.Column(db.Integer, db.ForeignKey('films.id', ondelete='CASCADE'), primary_key=True, nullable=False)
+
+    chosen_film = relationship('Film', back_populates='groupuserfilms', overlaps="films,groups_users")
+
+    group_user = relationship('GroupUser', back_populates='groupuserfilms', overlaps="films,groups_users")
