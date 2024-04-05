@@ -16,7 +16,21 @@ nav {
 
 @media (max-width: 575px){
   #user-groups {
-    margin-left: 200px;
+    margin-left: 50px;
+    margin-top: 30px;
+  }
+
+  #user-group-btns {
+    position: absolute;
+    right: 15px;
+    top: 40%;
+  }
+
+  .user-full-name {
+    position: relative;
+    font-size: 20px;
+    /* margin-left: 10px; */
+    left: 30px;
   }
 
   div.show-icon i.fas {
@@ -30,7 +44,7 @@ nav {
     margin-top: 50px;
     width: 200px;
     height: 300px;
-    left: 150px;
+    left: 100px;
   }
 
   #user-list {
@@ -50,13 +64,13 @@ nav {
   } */
 
   .film-title {
-    margin-left: 35%;
+    margin-left: 30%;
   }
   .film-rating {
-    margin-left: 35%;
+    margin-left: 30%;
   }
   .film-poster {
-    margin-left: 20%;
+    margin-left: 15%;
   }
   
   .awards-points-table .cat-column {
@@ -88,9 +102,19 @@ nav {
 }
 
 @media (min-width: 575px){
+  .user-full-name {
+    font-size: 25px;
+    margin-left: 5px;
+  }
+
   #user-groups {
     margin-top: 50px;
     margin-left: 80px;
+  }
+
+  #user-group-btns {
+    position: absolute;
+    right: 15px;
   }
 
   div.show-icon i.fas {
@@ -153,11 +177,6 @@ nav {
     font-weight: bold;
     line-height: 28px;
     word-wrap: break-word;
-  }
-
-  .user-full-name {
-    font-size: 25px;
-    margin-left: 5px;
   }
 
   /* #user-groups {
@@ -390,10 +409,10 @@ th {
   width: 80px;
 } */
 
-#user-group-btns {
+/* #user-group-btns {
   position: absolute;
   right: 15px;
-}
+} */
 
 .remove-film-button {
   border: none;
