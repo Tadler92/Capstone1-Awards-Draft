@@ -13,7 +13,7 @@ from funcs import login_session, logout_session, award_show_category_list, film_
 # from flask_uploads import configure_uploads, IMAGES, UploadSet
 
 import requests
-import json
+# import json
 # from funcs import add_tags_to_db, add_tags_to_lst, tag_lst, lst_to_str
 UPLOAD_FOLDER = '/static/photos'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -32,8 +32,8 @@ app.config['SQLALCHEMY_ECHO'] = True
 # configure_uploads(app, images)
 
 app.config['SECRET_KEY'] = "chickenzarecool21837"
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-debug = DebugToolbarExtension(app)
+# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+# debug = DebugToolbarExtension(app)
 
 connect_db(app)
 # db.create_all()
@@ -320,24 +320,6 @@ def show_group_info(group_id):
     group = Group.query.get_or_404(group_id)
 
     return render_template('group_info.html', group=group)
-    return jsonify(group=group.serialize())
-
-# @app.route('/groups/2/api')
-# def show_group_sevten_info():
-#     """Shows info for a specific groups, such as:
-#     1) Group name
-#     2) users in group
-#     3) points users have
-#     4) films users drafted and the film's points
-    
-#     """
-#     all_groups = [group.serialize() for group in Group.query.all()]
-
-#     group = Group.query.get_or_404(2)
-
-#     # return render_template('group_info.html', group=group)
-#     # return jsonify(group=group.serialize())
-#     return jsonify(groups=all_groups)
 
 
 @app.route('/groups/<int:group_id>/join-group', methods=['POST'])
@@ -559,9 +541,8 @@ def remove_drafted_film(gu_id, film_id):
 def homepage():
     """Shows homepage that users can visit without having an account"""
 
-    groups = Group.query.all()
 
-    return render_template('index.html', groups=groups)
+    return render_template('index.html')
 
 
 @app.route('/how-to-play')

@@ -142,6 +142,40 @@
 {% endblock %}
 
 {% block javascript %}
+<script>
+let $winsCell = $('.wins-cell');
+
+for (let cell of $winsCell) {
+  if (cell.innerText === '') {
+    cell.innerText = '0'
+  }
+}
+
+let $groupTables = $('#user-groups table');
+let $joinGroupBtn = $('.join-group');
+let $leaveGroupBtn = $('.leave-group');
+let $draftFilmBtn = $('.draft-film');
+let $removeFilmBtn = $('.remove-film-button');
+let $filmColumns = $('.film-column');
+let $logoutBtn = $('.signout');
+
+if ($groupTables.length >= 8){
+  $joinGroupBtn.addClass('disable-click');
+} else {
+  $joinGroupBtn.removeClass('disable-click');
+}
+
+for (let table of $groupTables) {
+  if (table.childNodes[3].childNodes.length >= 17) {
+    $draftFilmBtn.addClass('disable-click');
+  } else {
+    $draftFilmBtn.removeClass('disable-click');
+  }
+}
+</script>
+
+
+
 <!-- This is to present the graph on the page -->
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
