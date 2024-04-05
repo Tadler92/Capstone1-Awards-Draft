@@ -25,6 +25,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
     os.environ.get('DATABASE_URL', 'postgresql:///awards_draft'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
+# app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 # app.config['ACCESS-CONTROL-ALLOW'] = True
 # app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -151,9 +152,9 @@ def show_user_info(user_id):
     4) groups
     
     """
-    if CURR_USER_KEY not in session:
-        flash('Must be logged in first!', 'danger')
-        return redirect(url_for('login'))
+    # if CURR_USER_KEY not in session:
+    #     flash('Must be logged in first!', 'danger')
+    #     return redirect(url_for('login'))
 
 
     user = User.query.get_or_404(user_id)
@@ -254,6 +255,10 @@ def show_groups():
 @app.route('/groups/add', methods=['GET', 'POST'])
 def create_new_group():
     """Shows a form for a user to create a new group"""
+
+    if CURR_USER_KEY not in session:
+        flash('Must be logged in first!', 'danger')
+        return redirect(url_for('login'))
 
     form = GroupForm()
 
@@ -496,6 +501,10 @@ def show_film_info(film_id):
 def draft_film(groupuser_id):
     """Route that will actually allow a user to draft a film once they are in a group"""
 
+    if CURR_USER_KEY not in session:
+        flash('Must be logged in first!', 'danger')
+        return redirect(url_for('login'))
+
     # group = Group.query.get_or_404(gu.group_id)
     gu = db.session.query(GroupUser).filter(GroupUser.id == groupuser_id).first()
     group = Group.query.get_or_404(gu.group_id)
@@ -525,6 +534,10 @@ def draft_film(groupuser_id):
 @app.route('/groupusers/<int:gu_id>/films/<int:film_id>/undraft', methods=['POST'])
 def remove_drafted_film(gu_id, film_id):
     """Removes film that a user drafted from their list so they can draft another film"""
+
+    if CURR_USER_KEY not in session:
+        flash('Must be logged in first!', 'danger')
+        return redirect(url_for('login'))
 
     groupuserfilm = db.session.query(GroupUserFilm).filter(GroupUserFilm.group_user_id == gu_id, GroupUserFilm.film_id == film_id).first()
     
@@ -557,9 +570,9 @@ def homepage():
 @app.route('/how-to-play')
 def how_to_play():
     """Shows page to explain how to use application after a user signs up"""
-    if CURR_USER_KEY not in session:
-        flash('Must be logged in first!', 'danger')
-        return redirect(url_for('login'))
+    # if CURR_USER_KEY not in session:
+    #     flash('Must be logged in first!', 'danger')
+    #     return redirect(url_for('login'))
 
     return render_template('how_to.html')
 
