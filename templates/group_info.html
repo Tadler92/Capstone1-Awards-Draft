@@ -56,9 +56,9 @@
     </div>
   </div>
 
-  <div id="user-groups">
+  <div id="user-list" class="users-films">
     <p>Members:</p>
-    <ul id="user-list">
+    <ul>
       {% for user in group.users %}
 
         <li id="user-{{user.id}}">
@@ -92,7 +92,7 @@
 
           {% endif %}
 
-          <table id="{{user.username}}-table">
+          <table id="{{user.username}}-table" class="user-film-table">
             <thead>
               <th class="film-column">Films</th>
               <th class="point-column">Points</th>

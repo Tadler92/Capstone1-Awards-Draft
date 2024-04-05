@@ -14,38 +14,248 @@ nav {
   border-bottom: solid gold 0;
 }
 
-/* #split-banner {
-  background-color: gold;
-} */
+@media (max-width: 575px){
+  #user-groups {
+    margin-left: 200px;
+  }
 
-#profile-avatar {
-  border-radius: 100%;
-  display: block;
-  margin-left: -15px;
-  width: 200px;
-  height: 200px;
-  border: 5px solid #fff;
-  /* margin-top: -50px; */
-  z-index: 1;
-  position: relative;
-  box-shadow: 0 1px 1px rgba(136, 153, 166, 0.15);
+  div.show-icon i.fas {
+    font-size: 40px;
+    border-radius: 100px;
+    padding: 80px 40px 20px 50px;
+  }
+
+  #graph {
+    position: relative;
+    margin-top: 50px;
+    width: 200px;
+    height: 300px;
+    left: 150px;
+  }
+
+  #user-list {
+    margin-left: 25px;
+    /* padding-left: 0; */
+  }
+
+  .awards-points-table {
+    width: 100%;
+    border-spacing: 5px;
+    /* table-layout: fixed; */
+  }
+
+  /* table {
+    border-spacing: 20px;
+    table-layout: fixed;
+  } */
+
+  .film-title {
+    margin-left: 35%;
+  }
+  .film-rating {
+    margin-left: 35%;
+  }
+  .film-poster {
+    margin-left: 20%;
+  }
+  
+  .awards-points-table .cat-column {
+    width: 300px
+  }
+  
+  #points-breakdown {
+    border: 1px solid black;
+    width: 200px;
+    margin-left: 0;
+    margin-bottom: 15px;
+    padding-left: 5px;
+    border-spacing: 20px;
+    table-layout: fixed;
+  }
+  
+  #points-breakdown td,
+  th {
+    padding-left: 5px;
+    width: 100px;
+  }
+  
+  #points-breakdown .points-columns {
+    width: 50px;
+  }
+  #points-breakdown .categories {
+    width: 150px;
+  }
 }
 
-#sidebar-username {
-  /* margin-top: 30px; */
-  font-size: 21px;
-  font-weight: bold;
-  line-height: 28px;
-  word-wrap: break-word;
+@media (min-width: 575px){
+  #user-groups {
+    margin-top: 50px;
+    margin-left: 80px;
+  }
+
+  div.show-icon i.fas {
+    font-size: 40px;
+    border-radius: 100px;
+    padding: 80px 40px 20px 50px;
+  }
+
+  /* .film-title {
+    margin-left: 35%;
+  }
+  .film-rating {
+    margin-left: 35%;
+  }
+  .film-poster {
+    margin-left: 20%;
+  } */
+
+  #points-breakdown {
+    border: 1px solid black;
+    width: 200px;
+    margin-left: 0;
+    margin-bottom: 15px;
+    padding-left: 5px;
+    border-spacing: 20px;
+    table-layout: fixed;
+  }
+  
+  #points-breakdown td,
+  th {
+    padding-left: 5px;
+    width: 100px;
+  }
+  
+  #points-breakdown .points-columns {
+    width: 50px;
+  }
+  #points-breakdown .categories {
+    width: 180px;
+  }
 }
 
-#graph {
+@media (max-width: 770px){
+  #profile-avatar {
+    border-radius: 100%;
+    display: block;
+    margin-left: -15px;
+    width: 150px;
+    height: 150px;
+    border: 5px solid #fff;
+    /* margin-top: -50px; */
+    z-index: 1;
+    position: relative;
+    box-shadow: 0 1px 1px rgba(136, 153, 166, 0.15);
+  }
+
+  #sidebar-username {
+    /* margin-top: 30px; */
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 28px;
+    word-wrap: break-word;
+  }
+
+  .user-full-name {
+    font-size: 25px;
+    margin-left: 5px;
+  }
+
+  /* #user-groups {
+    margin-top: 50px;
+    margin-left: 80px;
+  } */
+
+  .film-title {
+    margin-left: 35%;
+  }
+  .film-rating {
+    margin-left: 35%;
+  }
+  .film-poster {
+    margin-left: 20%;
+  }
+}
+
+@media (min-width: 770px) {
+  #profile-avatar {
+    border-radius: 100%;
+    display: block;
+    margin-left: -15px;
+    width: 200px;
+    height: 200px;
+    border: 5px solid #fff;
+    /* margin-top: -50px; */
+    z-index: 1;
+    position: relative;
+    box-shadow: 0 1px 1px rgba(136, 153, 166, 0.15);
+  }
+
+  #sidebar-username {
+    /* margin-top: 30px; */
+    font-size: 21px;
+    font-weight: bold;
+    line-height: 28px;
+    word-wrap: break-word;
+  }
+
+  .user-full-name {
+    font-size: 35px;
+  }
+
+  div.show-icon i.fas {
+    /* display: inline-block;
+    background-color: green; */
+    font-size: 70px;
+    border-radius: 100px;
+    padding: 80px 53px 40px 50px;
+  }
+
+  #graph {
+    position: relative;
+    margin-top: 50px;
+    width: 200px;
+    height: 300px;
+    left: -30px;
+  }
+
+  .film-title {
+    margin-left: 40%;
+  }
+  .film-rating {
+    margin-left: 40%;
+  }
+  .film-poster {
+    margin-left: 30%;
+  }
+
+  #points-breakdown {
+    border: 1px solid black;
+    width: 100px;
+    margin-left: 0;
+    margin-bottom: 15px;
+    padding-left: 5px;
+    border-spacing: 20px;
+    table-layout: fixed;
+  }
+  
+  #points-breakdown td,
+  th {
+    padding-left: 5px;
+    width: 200px;
+  }
+  
+  #points-breakdown .points-columns {
+    width: 80px;
+  }
+}
+
+/* #graph {
   position: relative;
   margin-top: 50px;
   width: 200px;
   height: 300px;
   left: -30px;
-}
+} */
 
 .timeline-image {
   border-radius: 38px;
@@ -102,10 +312,39 @@ nav {
   opacity: 0.7;
 }
 
-#user-groups #user-list li a {
+/* #user-groups #user-list li a {
   color: white;
   font-size: 1em;
+} */
+
+#user-list {
+  display: block;
+  margin-right: 20px;
 }
+
+#user-list p {
+  font-size: 25px;
+}
+
+#user-list ul {
+  
+  list-style-type: none;
+}
+
+#user-list ul li a {
+  color: white;
+  font-size: 1em;
+  text-decoration: none;
+}
+
+#user-list ul li a:hover {
+  opacity: 0.7;
+}
+
+/* #user-list ul li a {
+  color: white;
+  font-size: 1em;
+} */
 
 .user-group-name {
   margin-left: 5px;
@@ -115,23 +354,23 @@ nav {
   margin-left: 15px;
 }
 
-table {
+.user-film-table {
   border-spacing: 20px;
   table-layout: fixed;
 }
 
-table td, th {
+.user-film-table td, th {
   width: 50px
 }
 
-table .point-column {
+.user-film-table .point-column {
   width: 60px;
 }
-table .film-column {
+.user-film-table .film-column {
   width: 300px;
 }
 
-#points-breakdown {
+/* #points-breakdown {
   border: 1px solid black;
   width: 100px;
   margin-left: 0;
@@ -149,7 +388,7 @@ th {
 
 #points-breakdown .points-columns {
   width: 80px;
-}
+} */
 
 #user-group-btns {
   position: absolute;
@@ -254,17 +493,13 @@ div img {
 div.show-icon i.fas {
   display: inline-block;
   background-color: green;
-  font-size: 70px;
+  /* font-size: 70px;
   border-radius: 100px;
-  padding: 80px 53px 40px 50px;
+  padding: 80px 53px 40px 50px; */
 }
 
 div.show-icon img {
   display: none;
-}
-
-.user-full-name {
-  font-size: 35px;
 }
 
 .disable-click {

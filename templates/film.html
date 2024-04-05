@@ -4,19 +4,19 @@
 
 {% block content %}
 
-<h1>{{title}}</h1>
-<h4>{{rating}}</h4>
+<h1 class="film-title">{{title}}</h1>
+<h4 class="film-rating">{{rating}}</h4>
 
-<img src="{{poster}}" alt="Poster for {{title}}" class="mb-5">
+<img src="{{poster}}" alt="Poster for {{title}}" class="mb-5 film-poster">
 
 
 
 {% for show in award_shows %}
-<table class="table">
+<table class="table awards-points-table">
   <thead>
     <tr>
-      <th>{{show}}</th>
-      <th>Nom Points</th>
+      <th class="cat-column">{{show}}</th>
+      <th class="nom-column">Nom Points</th>
       <th>Win Points</th>
     </tr>
   </thead>
