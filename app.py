@@ -54,7 +54,7 @@ def add_user_to_g():
         g.user = User.query.get(session[CURR_USER_KEY])
 
     # elif request.endpoint != 'login':
-    elif request.endpoint not in ['login', 'signup', 'homepage', 'static']:
+    elif request.endpoint not in ['login', 'signup', 'homepage']:
         flash('Must be logged in first!', 'danger')
         return redirect(url_for('login'))
 

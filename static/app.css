@@ -427,12 +427,14 @@ th {
 }
 
 #footer {
-  margin-top: auto;
+  /* margin-top: auto; */
   /* position: relative;
   left: 0;
   bottom: 0; */
-  width: 100%;
+  /* width: 100%; */
   /* background-color: #111; */
+  margin-top: auto;
+  width: 100%;
   background-color: crimson;
   border-top: solid gold 4px;
 }
