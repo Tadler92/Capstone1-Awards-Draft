@@ -58,6 +58,8 @@ def add_user_to_g():
         flash('Must be logged in first!', 'danger')
         return redirect(url_for('login'))
 
+    db.session.rollback()
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
