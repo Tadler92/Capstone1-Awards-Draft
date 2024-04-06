@@ -42,6 +42,20 @@ yr = Year.query.order_by(Year.curr_year.desc()).first()  # gives us 2024
 prev_yr = yr.curr_year - 1  # gives us 2023
 
 
+@app.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
+
+def dated_url_for(endpoint, **values):
+    if endpoint == 'static':
+        filename = values.values.get('filename', None)
+        if filename:
+            file_path = os.path.join(app.root_path, endpoint, filename)
+            values['q'] = int(os.stat(file_path).st_mtime)
+
+    return url_for(endpoint, **values)
+
+
 
 ######################################################################
 # Signup, Login, and Logout routes:
