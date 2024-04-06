@@ -32,7 +32,8 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 # images = UploadSet('images', IMAGES)
 # configure_uploads(app, images)
 
-app.config['SECRET_KEY'] = "chickenzarecool21837"
+app.config['SECRET_KEY'] = "65s4hbn6sr5804t84g06g4s840aWE80DA58068BEST"
+app.config['SESSION_TYPE'] = 'filesystem'
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # debug = DebugToolbarExtension(app)
 
@@ -130,6 +131,7 @@ def login():
         
         if user:
             login_session(user)
+
             flash(f'Welcome Back, {user.username}!', 'success')
             return redirect(url_for('show_user_info', user_id=user.id))
         
