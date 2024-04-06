@@ -618,5 +618,5 @@ def add_header(req):
     req.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     req.headers["Pragma"] = "no-cache"
     req.headers["Expires"] = "0"
-    req.headers['Cache-Control'] = 'public, max-age=0'
+    req.headers['Cache-Control'] = 'public, max-age=0, no-store'
     return req
