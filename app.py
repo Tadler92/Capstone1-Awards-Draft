@@ -21,6 +21,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
 CORS(app)
+# connect_db(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     os.environ.get('DATABASE_URL', 'postgresql:///awards_draft'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -38,7 +39,7 @@ app.config['SESSION_TYPE'] = 'filesystem'
 # debug = DebugToolbarExtension(app)
 
 connect_db(app)
-# db.create_all()
+db.create_all()
 yr = Year.query.order_by(Year.curr_year.desc()).first()  # gives us 2024
 prev_yr = yr.curr_year - 1  # gives us 2023
 
