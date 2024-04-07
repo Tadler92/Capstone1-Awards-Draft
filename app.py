@@ -21,27 +21,30 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
 CORS(app)
-# connect_db(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgresql:///awards_draft'))
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
+with app.app_context():
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = (
+        os.environ.get('DATABASE_URL', 'postgresql:///awards_draft'))
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_ECHO'] = True
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 # app.config['ACCESS-CONTROL-ALLOW'] = True
 # app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # images = UploadSet('images', IMAGES)
 # configure_uploads(app, images)
 
-app.config['SECRET_KEY'] = "65s4hbn6sr5804t84g06g4s840aWE80DA58068BEST"
-app.config['SESSION_TYPE'] = 'filesystem'
+    app.config['SECRET_KEY'] = "65s4hbn6sr5804t84g06g4s840aWE80DA58068BEST"
+    app.config['SESSION_TYPE'] = 'filesystem'
 # app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 # debug = DebugToolbarExtension(app)
 
-connect_db(app)
-db.create_all()
-yr = Year.query.order_by(Year.curr_year.desc()).first()  # gives us 2024
-prev_yr = yr.curr_year - 1  # gives us 2023
+# connect_db(app)
+    db.init_app(app)
+    db.create_all()
+    yr = Year.query.order_by(Year.curr_year.desc()).first()  # gives us 2024
+    prev_yr = yr.curr_year - 1  # gives us 2023
 
 
 @app.context_processor
