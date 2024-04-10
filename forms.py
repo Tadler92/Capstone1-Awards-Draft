@@ -25,7 +25,7 @@ class GroupForm(FlaskForm):
 
     group_name = StringField('Group Name', validators=[InputRequired(), Length(max=20)])
     image_id = SelectField('Group Image', coerce=int)
-    password = PasswordField('(Optional) Password', validators=[Optional(), Length(min=6)])
+    password = PasswordField('(Optional) Add a Password to Make Your Group Private', validators=[Optional(), Length(min=6)])
     
 
 

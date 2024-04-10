@@ -7,7 +7,7 @@ from flask_cors import CORS
 from models import db, connect_db, text, User, Group, Film, AwardShow, Category, GroupUser, GroupUserFilm, Year, ShowYear, CategoryShowPoint, Image
 from forms import AddUserForm, LoginForm, GroupForm, PrivateGroupForm, DraftFilmInGroupForm, EditProfileForm, EditGroupForm
 from secret import api_key, CURR_USER_KEY
-from funcs import login_session, logout_session, award_show_category_list, film_in_group_lst, merge_choices
+from funcs import login_session, logout_session, award_show_category_list, film_in_group_lst, merge_choices, merge_group_pfp_choices
 
 # from werkzeug.utils import secure_filename
 # from flask_uploads import configure_uploads, IMAGES, UploadSet
@@ -74,14 +74,15 @@ def add_user_to_g():
         g.user = User.query.get(session[CURR_USER_KEY])
         # print('*************Request', request.endpoint)
 
-    else:
-        g.user = None
+    # else:
+    #     g.user = None
 
     # elif request.endpoint != 'login':
-    # elif request.endpoint not in ['login', 'signup', 'homepage', 'how-to-play']:
-    #     print('*************Request', request.endpoint)
-    #     flash('Must be logged in first!', 'danger')
-    #     return redirect(url_for('login'))
+    elif request.endpoint not in ['login', 'signup', 'homepage', 'how_to_play', 'static']:
+        g.user = None
+        print('*************Request', request.endpoint)
+        flash('Must be logged in first!', 'danger')
+        return redirect(url_for('login'))
 
     db.session.rollback()
 
@@ -95,6 +96,10 @@ def signup():
     Presents form if form not valid.
     
     If a user already has a username in the DB, we'll flash a message and re-present the form"""
+
+    if CURR_USER_KEY in session:
+        flash('You are already signed up.', 'info')
+        return redirect(url_for('show_user_info', user_id=g.user.id))
 
     form = AddUserForm()
 
@@ -127,21 +132,43 @@ def signup():
 def login():
     """Logs in a user."""
 
-    form = LoginForm()
+    if CURR_USER_KEY in session:
+        flash('You are already logged in.', 'info')
+        return redirect(url_for('show_user_info', user_id=g.user.id))
 
-    if form.validate_on_submit():
-        user = User.authenticate(form.username.data,
-                                 form.password.data)
+    else:
+        form = LoginForm()
+
+        if form.validate_on_submit():
+            user = User.authenticate(form.username.data,
+                                    form.password.data)
+            
+            if user:
+                login_session(user)
+
+                flash(f'Welcome Back, {user.username}!', 'success')
+                return redirect(url_for('show_user_info', user_id=user.id))
+            
+            flash('Username or Password incorrect. Please try again.', 'danger')
+
+        return render_template('login.html', form=form)
+    
+    
+    # form = LoginForm()
+
+    # if form.validate_on_submit():
+    #     user = User.authenticate(form.username.data,
+    #                             form.password.data)
         
-        if user:
-            login_session(user)
+    #     if user:
+    #         login_session(user)
 
-            flash(f'Welcome Back, {user.username}!', 'success')
-            return redirect(url_for('show_user_info', user_id=user.id))
+    #         flash(f'Welcome Back, {user.username}!', 'success')
+    #         return redirect(url_for('show_user_info', user_id=user.id))
         
-        flash('Username or Password incorrect. Please try again.', 'danger')
+    #     flash('Username or Password incorrect. Please try again.', 'danger')
 
-    return render_template('login.html', form=form)
+    # return render_template('login.html', form=form)
 
 
 @app.route('/logout')
@@ -284,7 +311,7 @@ def create_new_group():
 
     choices = db.session.query(Image.id, Image.image).all()
     
-    form.image_id.choices = merge_choices(choices)
+    form.image_id.choices = merge_group_pfp_choices(choices)
 
     if form.validate_on_submit():
         group_name = form.group_name.data,
@@ -531,7 +558,7 @@ def draft_film(groupuser_id):
     form = DraftFilmInGroupForm()
 
     curr_in_group = film_in_group_lst(group)
-    choices = (db.session.query(Film.id, Film.title).filter(Film.id.notin_(curr_in_group), Film.year_id == (yr.id - 1)).all())
+    choices = (db.session.query(Film.id, Film.title).order_by(Film.title).filter(Film.id.notin_(curr_in_group), Film.year_id == (yr.id - 1)).all())
     
     form.film.choices = merge_choices(choices)
 
@@ -602,6 +629,27 @@ def about():
     """Shows the about page for the website"""
 
     return render_template('about.html')
+
+
+@app.route('/contact-us')
+def contact_us_form():
+    """Will show a form for users to contact us"""
+
+    return render_template('contact_us.html')
+
+
+@app.route('/our-team')
+def show_our_team():
+    """Will show a form for users to contact us"""
+
+    return render_template('our_team.html')
+
+
+@app.route('/news-and-updates')
+def show_news_updates():
+    """Will show a form for users to contact us"""
+
+    return render_template('news_updates.html')
 
 
 @app.errorhandler(404)

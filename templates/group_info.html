@@ -16,10 +16,14 @@
 </div>
 <div class="row full-width">
   <div class="container">
+    <!-- <div class="justify-content-center">
+      <button>Group Rules</button>
+    </div> -->
     <div class="row justify-content-end">
       <div class="col-9">
         <ul class="user-stats nav nav-pills">
           <div class="ml-auto">
+            <button id="rules-btn">Group Rules</button>
             
             {% if group.usergroups[0].is_admin and g.user.id == group.usergroups[0].user_id %}
 
@@ -48,6 +52,26 @@
   </div>
 </div>
 
+<div class="container">
+  <dialog id="group-rules" title="How Groups Work">
+    <p>Each group can have up to 8 (eight) members, and each member can draft up to 8 (eight) films.</p>
+
+    <p>The available films to draft and films that show up that you have drafted will only be from the current year's award season (meaning only films from 2023 will be seen if it's the 2024 awards season). Once a film is drafted by one member, it will no longer be available to draft by other members.</p>
+
+    <p>If a member drafted a film by mistake, they can remove the film from their draft list (which will allow the film to be available to the other members again) and draft a new film that will now become unavailable.</p>
+
+    <p>To join a group, simply click "Join Group".  If the group is private, you will need to submit the group password to join.</p>
+
+    <p>To leave a group, you can simply click "Leave Group".  The creator of the group (indicated by the gold "(Group Admin)" next to the member's username) will also have the authority to remove a user from their group.</p>
+
+    <p>When a member leaves or is removed from a group, any films that the member drafted will be made available to the other members of the group once again.</p>
+
+    <p>If you have any other questions about groups or drafting, you can visit our <a href="{{url_for('how_to_play')}}">how to play</a> page, and if you'd like to know more about how this idea came into being or the points given for a specific award show/category, then you can visit our <a href="{{url_for('about')}}">about</a> page.</p>
+
+    <button autofocus>Close</button>
+  </dialog>
+</div>
+
 <div class="row">
   <div class="col-sm-3">
     <h4 id="sidebar-username">{{ group.group_name }}</h4>
@@ -66,6 +90,9 @@
             <img src="{{user.img_url}}" alt="Profile Pic for {{user.username}}" class="timeline-image">
           </a>
           <a href="{{ url_for('show_user_info', user_id=user.id) }}" class="user-group-name">{{ user.username }}</a>
+          {% if group.usergroups[0].is_admin and user.id == group.usergroups[0].user_id %}
+          <small style="color: gold;">(Group Admin)</small>
+          {% endif %}
           {% if user.id == g.user.id %}
 
             {% for ug in group.usergroups %}

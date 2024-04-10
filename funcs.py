@@ -55,7 +55,22 @@ def merge_choices(choices):
     """Function that turns information gotten from a db into a list of tuples with those choices"""
 
     ids = [0]
-    titles = ['-- Choose an option --']
+    titles = ['-- Choose a Film to Draft --']
+    for choice in choices:
+        ids.append(choice[0])
+        titles.append(choice[1])
+
+    merged_choices = [(ids[i], titles[i]) for i in range(0, len(ids))]
+
+    return merged_choices
+
+
+
+def merge_group_pfp_choices(choices):
+    """Function that turns information gotten from a db into a list of tuples with those choices"""
+
+    ids = [0]
+    titles = ['-- Choose a Profile Picture for Your Group --']
     for choice in choices:
         ids.append(choice[0])
         titles.append(choice[1])

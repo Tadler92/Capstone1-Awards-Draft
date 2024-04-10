@@ -5,11 +5,21 @@
 {% block content %}
 
 <h1>Welcome to the Movie Awards Draft Site!!</h1>
-<p>
-  To begin, please either
-  <a href="{{url_for('signup')}}" class="btn btn-primary btn-sm">signup</a> 
-  or 
-  <a href="{{url_for('login')}}" class="btn btn-primary btn-sm">login</a>
-</p>
+{% if g.user %}
+  <p>
+    You can now
+    <a href="{{url_for('create_new_group')}}">create</a>
+    or
+    <a href="{{url_for('show_groups')}}">join</a>
+    a group. Do so now to draft films and recieve points for any nominations and/or wins the film gets.
+  </p>
+{% else %}
+  <p>
+    To begin, please either
+    <a href="{{url_for('signup')}}" class="btn btn-primary btn-sm">signup</a> 
+    or 
+    <a href="{{url_for('login')}}" class="btn btn-primary btn-sm">login</a>
+  </p>
+{% endif %}
 
 {% endblock %}

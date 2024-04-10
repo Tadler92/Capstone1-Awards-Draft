@@ -28,9 +28,14 @@ flex-direction: column;">
   <a class="navbar-brand" href="{{url_for('homepage')}}">Home</a>
   <ul class="navbar-nav">
     <li class="nav-item"><a class="nav-link" href="{{url_for('show_groups')}}">Groups</a></li>
+    <li class="nav-item"><a class="nav-link" href="{{url_for('how_to_play')}}">How to Draft</a></li>
     {% if g.user %}
     <li class="nav-item signout"><a class="nav-link" href="{{url_for('logout')}}">Logout</a></li>
     <li class="nav-item"><a class="nav-link" href="{{url_for('show_user_info', user_id=g.user.id)}}">Profile Page</a></li>
+    <li id="welcome-name" class="nav-item">
+      <img src="{{g.user.img_url}}" alt="Profile Picture of {{g.user.username}}" id="nav-image">
+      <a class="nav-link" href="{{url_for('show_user_info', user_id=g.user.id)}}">Hello, {{g.user.username}}</a>
+    </li>
     {% else %}
     <li class="nav-item signin"><a class="nav-link" href="{{url_for('signup')}}">Signup</a></li>
     <li class="nav-item signin"><a class="nav-link" href="{{url_for('login')}}">Login</a></li>
@@ -58,10 +63,10 @@ border-top: solid gold 4px;">
   <div class="container p-1 justify-content-center">
     <ul class=" navbar-nav list-unstyled mb-0 justify-content-center">
       <li class="nav-item"><a href="{{url_for('homepage')}}" class="nav-link text-white-50">Home</a></li>
-      <li class="nav-item"><a href="/news-and-updates" class="nav-link text-white-50">News and Updates</a></li>
+      <li class="nav-item"><a href="{{url_for('show_news_updates')}}" class="nav-link text-white-50">News and Updates</a></li>
       <li class="nav-item"><a href="{{url_for('about')}}" class="nav-link text-white-50">About</a></li>
-      <li class="nav-item"><a href="/contact-us" class="nav-link text-white-50">Contact Us</a></li>
-      <li class="nav-item"><a href="/our-team" class="nav-link text-white-50">Our Team</a></li>
+      <li class="nav-item"><a href="{{url_for('contact_us_form')}}" class="nav-link text-white-50">Contact Us</a></li>
+      <li class="nav-item"><a href="{{url_for('show_our_team')}}" class="nav-link text-white-50">Our Team</a></li>
     </ul>
   </div>
   <div class="text-center p-1 footer-bottom full-width" style="
@@ -79,7 +84,7 @@ border-top: solid gold 4px;">
 
 <script src="https://unpkg.com/jquery"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<!-- <script src="/static/app.js"></script> -->
+<script src="/static/app.js"></script>
 
 {% block javascript %}
 {% endblock %}
