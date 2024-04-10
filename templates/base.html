@@ -22,25 +22,37 @@ min-height: 150vh;
 display: flex;
 flex-direction: column;">
 
-<nav id="navbar" class="navbar navbar-expand navbar-dark mb-4" style="
+<nav id="navbar" class="navbar navbar-expand-sm navbar-dark mb-4" style="
   background-color: crimson;
   border-bottom: solid gold 4px;">
   <a class="navbar-brand" href="{{url_for('homepage')}}">Home</a>
-  <ul class="navbar-nav">
-    <li class="nav-item"><a class="nav-link" href="{{url_for('show_groups')}}">Groups</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{url_for('how_to_play')}}">How to Draft</a></li>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
     {% if g.user %}
-    <li class="nav-item signout"><a class="nav-link" href="{{url_for('logout')}}">Logout</a></li>
-    <li class="nav-item"><a class="nav-link" href="{{url_for('show_user_info', user_id=g.user.id)}}">Profile Page</a></li>
-    <li id="welcome-name" class="nav-item">
-      <img src="{{g.user.img_url}}" alt="Profile Picture of {{g.user.username}}" id="nav-image">
-      <a class="nav-link" href="{{url_for('show_user_info', user_id=g.user.id)}}">Hello, {{g.user.username}}</a>
-    </li>
+    <img src="{{g.user.img_url}}" alt="Profile Picture of {{g.user.username}}" id="nav-image">
+      <p class="nav-link text-white-50">Hello, {{g.user.username}}</p>
     {% else %}
-    <li class="nav-item signin"><a class="nav-link" href="{{url_for('signup')}}">Signup</a></li>
-    <li class="nav-item signin"><a class="nav-link" href="{{url_for('login')}}">Login</a></li>
+    <span class="navbar-toggler-icon"></span>
     {% endif %}
-  </ul>
+  </button>
+
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="{{url_for('show_groups')}}">Groups</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{url_for('how_to_play')}}">How to Draft</a></li>
+      {% if g.user %}
+      <li class="nav-item signout"><a class="nav-link" href="{{url_for('logout')}}">Logout</a></li>
+      <li class="nav-item"><a class="nav-link d-block d-sm-none" href="{{url_for('show_user_info', user_id=g.user.id)}}">Profile Page</a></li>
+      <li id="welcome-name" class="nav-item d-none d-sm-flex">
+        <img src="{{g.user.img_url}}" alt="Profile Picture of {{g.user.username}}" id="nav-image">
+        <a class="nav-link" href="{{url_for('show_user_info', user_id=g.user.id)}}">Hello, {{g.user.username}}</a>
+      </li>
+      {% else %}
+      <li class="nav-item signin"><a class="nav-link" href="{{url_for('signup')}}">Signup</a></li>
+      <li class="nav-item signin"><a class="nav-link" href="{{url_for('login')}}">Login</a></li>
+      {% endif %}
+    </ul>
+  </div>
 </nav>
 
 
@@ -83,6 +95,14 @@ border-top: solid gold 4px;">
 <script src="https://kit.fontawesome.com/be976d18ad.js" crossorigin="anonymous"></script>
 
 <script src="https://unpkg.com/jquery"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+    integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
+    crossorigin="anonymous"></script>
+
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="/static/app.js"></script>
 
