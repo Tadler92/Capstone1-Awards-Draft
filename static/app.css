@@ -30,11 +30,11 @@ nav {
     margin-top: 30px;
   }
 
-  #user-group-btns {
+  /* #user-group-btns {
     position: absolute;
     right: 15px;
     top: 50%;
-  }
+  } */
 
   .user-full-name {
     position: relative;
@@ -111,13 +111,13 @@ nav {
   }
 }
 
-@media (max-width: 450px) {
+/* @media (max-width: 450px) {
   #user-group-btns {
     position: absolute;
     right: 15px;
     top: 60%;
   }
-}
+} */
 
 @media (min-width: 575px){
   .user-full-name {
@@ -130,10 +130,10 @@ nav {
     margin-left: 80px;
   }
 
-  #user-group-btns {
+  /* #user-group-btns {
     position: absolute;
     right: 15px;
-  }
+  } */
 
   div.show-icon i.fas {
     font-size: 40px;
@@ -336,7 +336,7 @@ nav {
 
 #rules-btn {
   position: absolute;
-  left: 40px;
+  left: 50px;
   border: none;
   background-color: transparent;
   color: crimson;
