@@ -36,12 +36,12 @@
       <h4>Anything Else?</h4>
       {% if g.user %}
       <p>
-        Other than that, you can pretty much just sit back and wait for the points to roll in as nominations and wins get announced for films.  If you want, you can make any edits to your profile by clicking <a href="/users/{{g.user.id}}/edit">here</a>, or navigating to your profile using the navbar.
+        Other than that, you can pretty much just sit back and wait for the points to roll in as nominations and wins get announced for films.  If you want, you can make any edits to your profile by clicking <a href="{{url_for('edit_profile')}}">here</a>, or navigating to your profile using the navbar.
       </p>
       {% endif %}
 
       <p>
-        And if you'd like to learn more about how and why this Awards Draft came into being, or learn the point system we have in place, you can click <a href="/about">here</a>.  Thank you for signing up an <b>HAPPY DRAFTING!!<i class="far fa-face-laugh-beam"></i></b>
+        And if you'd like to learn more about how and why this Awards Draft came into being, or learn the point system we have in place, you can click <a href="/about">here</a>.  Thank you for signing up and <b>HAPPY DRAFTING!!<i class="far fa-face-laugh-beam"></i></b>
       </p>
       
     </div>
